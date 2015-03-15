@@ -18,36 +18,19 @@ using namespace cv;
 
 bool DetectFace(Mat& inputImage, Mat& outputImage, CascadeClassifier& classifier)
 {
-    Mat frame, img_s, frame_gray;
 	vector<Rect> objects;
 	bool detected = false;
-	while(inputVideo.read(frame))
-	{
-		total_frames++;
-		cvtColor(frame, frame_gray, COLOR_BGR2GRAY);
-		if (!detected)
-		{
-            face_cascade.detectMultiScale(frame_gray, objects, 1.3, 5);
-            cout << "Objects detected:" << objects.size() << "\t";
-            if (objects.size() > 0) detected = true;
-		}
-
-		if (detected && frame_count < 10)
-		{
-            frame_count++;
-            for(int i = 0; i < objects.size(); ++i)
-                rectangle(frame, objects[i], Scalar(0,255,0), 2);
-            cout << "Frame count" << frame_count++ << endl;
-		}
-		else
-		{
-            frame_count = 0;
-            detected = false;
-		}
-    return false;
+	outputImage = inputImage;
+	Mat grayImage;
+    cvtColor(inputImage, grayImage, COLOR_BGR2GRAY);
+    classifier.detectMultiScale(grayImage, objects, 1.3, 5);
+    cout << "Objects detected:" << objects.size() << "\t";
+    for(int i = 0; i < objects.size(); ++i)
+        rectangle(outputImage, objects[i], Scalar(0,255,0), 2);
+    return true;
 }
 
-bool DetectText(Mat& inputImage, Mat& outputImage)
+bool DetectText(Mat& inputImage, Mat& outputImage, Mat& binaryImage)
 {
     return false;
 }
@@ -62,7 +45,12 @@ int main(int argc, char** argv)
     }
 
     string inputFileName(argv[1]);
-	VideoCapture vc(inputFileName);
+    VideoCapture vc;
+    if (inputFileName == "0")
+        vc = VideoCapture(0);
+    else
+        vc = VideoCapture(inputFileName);
+
 	if (!vc.isOpened())
 	{
         cerr << "Error: Failed to open the input file " << inputFileName << endl;
@@ -85,14 +73,17 @@ int main(int argc, char** argv)
 	// TODO check whether the xml file exists
 	CascadeClassifier face_cascade = CascadeClassifier("/home/xinyu/Videos/haarcascade_frontalface_default.xml");
 
-	Mat outputFrame;
+	Mat outputFrame(width*2, height*2, CV_8UC3);
+	cout << "Debug: width=" << width << "\theight=" << height << endl;
+    Mat faceResult(width, height, CV_8UC3);
+    Mat textResult(width, height, CV_8UC3);
+    Mat textBinary(width, height, CV_8UC3);
 	int total_frames = 0;
-
+	namedWindow("Result");
 	do {
-        Mat faceResult;
+
         DetectFace(inputFrame, faceResult, face_cascade);
-        Mat textResult;
-        DetectText(inputFrame, textResult);
+        DetectText(inputFrame, textResult, textBinary);
         /*
             The output image consists of four parts
             +-------+-------+
@@ -109,9 +100,15 @@ int main(int argc, char** argv)
             3 - Text Detection Result
             4 - Text Binary Image
         */
-	} while (vc.read(inputFrame))
+        inputFrame.copyTo(outputFrame(Rect(0, 0, width, height)));
+        faceResult.copyTo(outputFrame(Rect(width, 0, width, height)));
+        textResult.copyTo(outputFrame(Rect(0, height, width, height)));
+        textBinary.copyTo(outputFrame(Rect(width, height, width, height)));
+        imshow("Result", outputFrame);
+        if (waitKey(20) >= 0) break;
+	} while (vc.read(inputFrame));
 	cout << "Reach the end of the input file" << endl;
-    cout << "Total frames = " << total_frame << endl;
+    cout << "Total frames = " << total_frames << endl;
     cout << "Done!" << endl;
 	return 0;
 }
