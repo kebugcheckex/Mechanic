@@ -15,6 +15,29 @@
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add library="/usr/local/lib/libopencv_contrib.so" />
+					<Add library="/usr/local/lib/libopencv_core.so" />
+					<Add library="/usr/local/lib/libopencv_features2d.so" />
+					<Add library="/usr/local/lib/libopencv_flann.so" />
+					<Add library="/usr/local/lib/libopencv_gpu.so" />
+					<Add library="/usr/local/lib/libopencv_highgui.so" />
+					<Add library="/usr/local/lib/libopencv_imgproc.so" />
+					<Add library="/usr/local/lib/libopencv_legacy.so" />
+					<Add library="/usr/local/lib/libopencv_ml.so" />
+					<Add library="/usr/local/lib/libopencv_nonfree.so" />
+					<Add library="/usr/local/lib/libopencv_objdetect.so" />
+					<Add library="/usr/local/lib/libopencv_ocl.so" />
+					<Add library="/usr/local/lib/libopencv_photo.so" />
+					<Add library="/usr/local/lib/libopencv_stitching.so" />
+					<Add library="/usr/local/lib/libopencv_superres.so" />
+					<Add library="/usr/local/lib/libopencv_ts.a" />
+					<Add library="/usr/local/lib/libopencv_video.so" />
+					<Add library="/usr/local/lib/libopencv_videostab.so" />
+					<Add library="/usr/local/lib/libopencv_calib3d.so" />
+					<Add library="/usr/local/lib/liblept.so" />
+					<Add library="/usr/local/lib/libtesseract.so" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/Mechanic" prefix_auto="1" extension_auto="1" />
@@ -26,6 +49,29 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="/usr/local/lib/liblept.a" />
+					<Add library="/usr/local/lib/liblept.so" />
+					<Add library="/usr/local/lib/libopencv_calib3d.so" />
+					<Add library="/usr/local/lib/libopencv_contrib.so" />
+					<Add library="/usr/local/lib/libopencv_core.so" />
+					<Add library="/usr/local/lib/libopencv_features2d.so" />
+					<Add library="/usr/local/lib/libopencv_flann.so" />
+					<Add library="/usr/local/lib/libopencv_gpu.so" />
+					<Add library="/usr/local/lib/libopencv_highgui.so" />
+					<Add library="/usr/local/lib/libopencv_imgproc.so" />
+					<Add library="/usr/local/lib/libopencv_legacy.so" />
+					<Add library="/usr/local/lib/libopencv_ml.so" />
+					<Add library="/usr/local/lib/libopencv_nonfree.so" />
+					<Add library="/usr/local/lib/libopencv_objdetect.so" />
+					<Add library="/usr/local/lib/libopencv_ocl.so" />
+					<Add library="/usr/local/lib/libopencv_photo.so" />
+					<Add library="/usr/local/lib/libopencv_stitching.so" />
+					<Add library="/usr/local/lib/libopencv_superres.so" />
+					<Add library="/usr/local/lib/libopencv_ts.a" />
+					<Add library="/usr/local/lib/libopencv_video.so" />
+					<Add library="/usr/local/lib/libopencv_videostab.so" />
+					<Add library="/usr/local/lib/libtesseract.a" />
+					<Add library="/usr/local/lib/libtesseract.so" />
 				</Linker>
 			</Target>
 		</Build>
@@ -36,7 +82,23 @@
 		<Linker>
 			<Add option="`pkg-config --cflags opencv --libs opencv`" />
 		</Linker>
+		<Unit filename="fast_clustering.cpp" />
+		<Unit filename="group_classifier.cpp" />
+		<Unit filename="group_classifier.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="max_meaningful_clustering.cpp" />
+		<Unit filename="max_meaningful_clustering.h" />
+		<Unit filename="min_bounding_box.cpp" />
+		<Unit filename="min_bounding_box.h" />
+		<Unit filename="mser.cpp" />
+		<Unit filename="mser.h" />
+		<Unit filename="nfa.cpp" />
+		<Unit filename="region.cpp" />
+		<Unit filename="region.h" />
+		<Unit filename="region_classifier.cpp" />
+		<Unit filename="region_classifier.h" />
+		<Unit filename="text_extract.h" />
+		<Unit filename="utils.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
