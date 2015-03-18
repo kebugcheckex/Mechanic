@@ -34,7 +34,7 @@ bool DetectFace(Mat& inputImage, Mat& outputImage, CascadeClassifier& classifier
 {
 	vector<Rect> objects;
 	bool detected = false;
-	outputImage = inputImage;
+	inputImage.copyTo(outputImage);
 	Mat grayImage;
     cvtColor(inputImage, grayImage, COLOR_BGR2GRAY);
     classifier.detectMultiScale(grayImage, objects, 1.3, 5);
@@ -46,7 +46,7 @@ bool DetectFace(Mat& inputImage, Mat& outputImage, CascadeClassifier& classifier
 
 bool DetectText(Mat& inputImage, Mat& outputImage, Mat& binaryImage)
 {
-    outputImage = inputImage;
+    inputImage.copyTo(outputImage);
     tesseract::TessBaseAPI api;
     api.Init(NULL, "eng");
     vector<Region> regions;
@@ -245,10 +245,9 @@ bool DetectText(Mat& inputImage, Mat& outputImage, Mat& binaryImage)
                 Point coord = Point(box->x-15, box->y );
                 addText(outputImage, ocrResult, coord, font );
             }
+            cvtColor(grey, binaryImage, CV_GRAY2RGB);
         }
         regions.clear();
-        cvtColor(grey, grey, CV_GRAY2RGB);
-        hconcat(outputImage, grey, outputImage);
     }
     return true;
 }
