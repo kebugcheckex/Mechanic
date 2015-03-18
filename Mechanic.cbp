@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="camera.mpg temp.mpg" />
+				<Option parameters="http://192.168.0.9:8090/live.mpg temp.mpg" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -44,14 +44,12 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="http://192.168.0.9:8090/live.mpg temp.mpg" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="/usr/local/lib/liblept.a" />
-					<Add library="/usr/local/lib/liblept.so" />
-					<Add library="/usr/local/lib/libopencv_calib3d.so" />
 					<Add library="/usr/local/lib/libopencv_contrib.so" />
 					<Add library="/usr/local/lib/libopencv_core.so" />
 					<Add library="/usr/local/lib/libopencv_features2d.so" />
@@ -70,7 +68,8 @@
 					<Add library="/usr/local/lib/libopencv_ts.a" />
 					<Add library="/usr/local/lib/libopencv_video.so" />
 					<Add library="/usr/local/lib/libopencv_videostab.so" />
-					<Add library="/usr/local/lib/libtesseract.a" />
+					<Add library="/usr/local/lib/libopencv_calib3d.so" />
+					<Add library="/usr/local/lib/liblept.so" />
 					<Add library="/usr/local/lib/libtesseract.so" />
 				</Linker>
 			</Target>

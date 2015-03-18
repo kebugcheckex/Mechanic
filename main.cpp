@@ -32,6 +32,7 @@ using namespace tesseract;
 
 bool DetectFace(Mat& inputImage, Mat& outputImage, CascadeClassifier& classifier)
 {
+    cout << "Debug checkpoint: Detect Face" << endl;
 	vector<Rect> objects;
 	bool detected = false;
 	inputImage.copyTo(outputImage);
@@ -46,6 +47,7 @@ bool DetectFace(Mat& inputImage, Mat& outputImage, CascadeClassifier& classifier
 
 bool DetectText(Mat& inputImage, Mat& outputImage, Mat& binaryImage)
 {
+    cout << "Debug checkpoint: Detect Text" << endl;
     inputImage.copyTo(outputImage);
     tesseract::TessBaseAPI api;
     api.Init(NULL, "eng");
@@ -245,6 +247,7 @@ bool DetectText(Mat& inputImage, Mat& outputImage, Mat& binaryImage)
                 Point coord = Point(box->x-15, box->y );
                 addText(outputImage, ocrResult, coord, font );
             }
+            cout << "Grey size " << grey.cols << " " << grey.rows << endl;
             cvtColor(grey, binaryImage, CV_GRAY2RGB);
         }
         regions.clear();
@@ -273,7 +276,7 @@ int main(int argc, char** argv)
         cerr << "Error: Failed to open the input file " << inputFileName << endl;
         return 2;
 	}
-
+	namedWindow("Result");
 	Mat inputFrame;
 	vc >> inputFrame;
 	int width = inputFrame.cols;
@@ -294,15 +297,19 @@ int main(int argc, char** argv)
 
 	Mat outputFrame(height*2, width*2, CV_8UC3);
 	cout << "Debug: width=" << width << "\theight=" << height << endl;
-    Mat faceResult(width, height, CV_8UC3);
-    Mat textResult(width, height, CV_8UC3);
-    Mat textBinary(width, height, CV_8UC3);
+    Mat faceResult(height, width, CV_8UC3);
+    Mat textResult(height, width, CV_8UC3);
+    Mat textBinary(height, width, CV_8UC3);
+    textBinary = Scalar(0, 0, 0);
 	int total_frames = 0;
-	namedWindow("Result");
+	int frame_count = 0;
 	do {
-
-        DetectFace(inputFrame, faceResult, face_cascade);
-        DetectText(inputFrame, textResult, textBinary);
+        //if (frame_count % 5 == 0)
+        {
+            DetectFace(inputFrame, faceResult, face_cascade);
+            DetectText(inputFrame, textResult, textBinary);
+        }
+        frame_count++;
         /*
             The output image consists of four parts
             +-------+-------+
@@ -324,10 +331,12 @@ int main(int argc, char** argv)
         textResult.copyTo(outputFrame(Rect(0, height, width, height)));
         textBinary.copyTo(outputFrame(Rect(width, height, width, height)));
         imshow("Result", outputFrame);
+        vw << outputFrame;
         if (waitKey(20) >= 0) break;
 	} while (vc.read(inputFrame));
 	cout << "Reach the end of the input file" << endl;
     cout << "Total frames = " << total_frames << endl;
     cout << "Done!" << endl;
+#endif
 	return 0;
 }
