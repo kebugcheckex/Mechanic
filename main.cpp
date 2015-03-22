@@ -304,7 +304,7 @@ int main(int argc, char** argv)
 	int total_frames = 0;
 	int frame_count = 0;
 	do {
-        //if (frame_count % 5 == 0)
+        if (frame_count % 5 == 0)
         {
             DetectFace(inputFrame, faceResult, face_cascade);
             DetectText(inputFrame, textResult, textBinary);
@@ -337,6 +337,5 @@ int main(int argc, char** argv)
 	cout << "Reach the end of the input file" << endl;
     cout << "Total frames = " << total_frames << endl;
     cout << "Done!" << endl;
-#endif
 	return 0;
 }
