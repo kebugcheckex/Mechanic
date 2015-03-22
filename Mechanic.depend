@@ -159,11 +159,8 @@
 	<set>
 	<valarray>
 
-1426709722 source:/home/xinyu/projects/Mechanic/main.cpp
-	<iostream>
-	<opencv2/opencv.hpp>
-	<tesseract/baseapi.h>
-	<leptonica/allheaders.h>
+1427064443 source:/home/xinyu/projects/Mechanic/main.cpp
+	"stdafx.h"
 	"region.h"
 	"mser.h"
 	"max_meaningful_clustering.h"
@@ -712,4 +709,585 @@
 
 1426049439 source:/home/xinyu/projects/Mechanic/region_classifier.cpp
 	"region_classifier.h"
+
+1427057220 /usr/local/include/tbb/tbb_stddef.h
+	"tbb_config.h"
+	<cstddef>
+	"internal/_tbb_windef.h"
+	<stdint.h>
+	<memory>
+	<utility>
+
+1427057220 /usr/local/include/tbb/tbb_config.h
+	<cstddef>
+
+1427057220 /usr/local/include/tbb/internal/_tbb_windef.h
+
+1427057220 /usr/local/include/tbb/tbb.h
+	"aggregator.h"
+	"aligned_space.h"
+	"atomic.h"
+	"blocked_range.h"
+	"blocked_range2d.h"
+	"blocked_range3d.h"
+	"cache_aligned_allocator.h"
+	"combinable.h"
+	"concurrent_hash_map.h"
+	"concurrent_lru_cache.h"
+	"concurrent_priority_queue.h"
+	"concurrent_queue.h"
+	"concurrent_unordered_map.h"
+	"concurrent_unordered_set.h"
+	"concurrent_vector.h"
+	"critical_section.h"
+	"enumerable_thread_specific.h"
+	"flow_graph.h"
+	"mutex.h"
+	"null_mutex.h"
+	"null_rw_mutex.h"
+	"parallel_do.h"
+	"parallel_for.h"
+	"parallel_for_each.h"
+	"parallel_invoke.h"
+	"parallel_reduce.h"
+	"parallel_scan.h"
+	"parallel_sort.h"
+	"partitioner.h"
+	"pipeline.h"
+	"queuing_mutex.h"
+	"queuing_rw_mutex.h"
+	"reader_writer_lock.h"
+	"recursive_mutex.h"
+	"spin_mutex.h"
+	"spin_rw_mutex.h"
+	"task.h"
+	"task_arena.h"
+	"task_group.h"
+	"task_scheduler_init.h"
+	"task_scheduler_observer.h"
+	"tbb_allocator.h"
+	"tbb_exception.h"
+	"tbb_thread.h"
+	"tick_count.h"
+
+1427057220 /usr/local/include/tbb/aggregator.h
+	"atomic.h"
+	"tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/atomic.h
+	<cstddef>
+	"tbb_machine.h"
+
+1427057220 /usr/local/include/tbb/tbb_machine.h
+	"tbb_stddef.h"
+	"machine/gcc_generic.h"
+	"machine/linux_intel64.h"
+	"machine/linux_ia32.h"
+	"machine/icc_generic.h"
+	"machine/windows_ia32.h"
+	"machine/windows_intel64.h"
+	"machine/xbox360_ppc.h"
+	"machine/msvc_armv7.h"
+	"machine/mic_common.h"
+	"machine/icc_generic.h"
+	"machine/linux_intel64.h"
+	"machine/gcc_generic.h"
+	"machine/icc_generic.h"
+	"machine/linux_ia32.h"
+	"machine/linux_intel64.h"
+	"machine/linux_ia64.h"
+	"machine/mac_ppc.h"
+	"machine/gcc_armv7.h"
+	"machine/gcc_generic.h"
+	"machine/linux_common.h"
+	"machine/icc_generic.h"
+	"machine/linux_ia32.h"
+	"machine/linux_intel64.h"
+	"machine/mac_ppc.h"
+	"machine/macos_common.h"
+	"machine/ibm_aix51.h"
+	"machine/linux_ia32.h"
+	"machine/linux_intel64.h"
+	"machine/sunos_sparc.h"
+	<sched.h>
+
+1427057220 /usr/local/include/tbb/machine/gcc_generic.h
+	<stdint.h>
+	<unistd.h>
+	"gcc_itsx.h"
+
+1427057220 /usr/local/include/tbb/machine/gcc_itsx.h
+	<immintrin.h>
+
+1427057220 /usr/local/include/tbb/machine/linux_intel64.h
+	<stdint.h>
+	"gcc_ia32_common.h"
+
+1427057220 /usr/local/include/tbb/machine/gcc_ia32_common.h
+	"gcc_itsx.h"
+
+1427057220 /usr/local/include/tbb/machine/linux_ia32.h
+	<stdint.h>
+	"gcc_ia32_common.h"
+
+1427057220 /usr/local/include/tbb/machine/icc_generic.h
+	"msvc_ia32_common.h"
+	"gcc_ia32_common.h"
+
+1427057220 /usr/local/include/tbb/machine/msvc_ia32_common.h
+	<intrin.h>
+	<thread>
+
+1427057220 /usr/local/include/tbb/machine/windows_ia32.h
+	"msvc_ia32_common.h"
+
+1427057220 /usr/local/include/tbb/machine/windows_intel64.h
+	<intrin.h>
+	"msvc_ia32_common.h"
+
+1427057220 /usr/local/include/tbb/machine/xbox360_ppc.h
+	"xtl.h"
+	"ppcintrinsics.h"
+
+1427057220 /usr/local/include/tbb/machine/msvc_armv7.h
+	<intrin.h>
+	<float.h>
+	<thread>
+
+1427057220 /usr/local/include/tbb/machine/mic_common.h
+	<immintrin.h>
+	<sched.h>
+
+1427057220 /usr/local/include/tbb/machine/linux_ia64.h
+	<stdint.h>
+	<ia64intrin.h>
+
+1427057220 /usr/local/include/tbb/machine/mac_ppc.h
+	<stdint.h>
+	<unistd.h>
+
+1427057220 /usr/local/include/tbb/machine/gcc_armv7.h
+	<sys/param.h>
+	<unistd.h>
+
+1427057220 /usr/local/include/tbb/machine/linux_common.h
+	<sched.h>
+	<unistd.h>
+	<sys/syscall.h>
+	<limits.h>
+	<errno.h>
+
+1427057220 /usr/local/include/tbb/machine/macos_common.h
+	<sched.h>
+	<sys/types.h>
+	<sys/sysctl.h>
+	<libkern/OSAtomic.h>
+
+1427057220 /usr/local/include/tbb/machine/ibm_aix51.h
+	<stdint.h>
+	<unistd.h>
+	<sched.h>
+
+1427057220 /usr/local/include/tbb/machine/sunos_sparc.h
+	<stdint.h>
+	<unistd.h>
+
+1427057220 /usr/local/include/tbb/tbb_profiling.h
+	"internal/_tbb_strings.h"
+	<stdlib.h>
+	"tbb_stddef.h"
+	"atomic.h"
+
+1427057220 /usr/local/include/tbb/internal/_tbb_strings.h
+
+1427057220 /usr/local/include/tbb/aligned_space.h
+	"tbb_stddef.h"
+	"tbb_machine.h"
+
+1427057220 /usr/local/include/tbb/blocked_range.h
+	"tbb_stddef.h"
+
+1427057220 /usr/local/include/tbb/blocked_range2d.h
+	"tbb_stddef.h"
+	"blocked_range.h"
+
+1427057220 /usr/local/include/tbb/blocked_range3d.h
+	"tbb_stddef.h"
+	"blocked_range.h"
+
+1427057220 /usr/local/include/tbb/cache_aligned_allocator.h
+	<new>
+	"tbb_stddef.h"
+	<utility>
+
+1427057220 /usr/local/include/tbb/combinable.h
+	"enumerable_thread_specific.h"
+	"cache_aligned_allocator.h"
+
+1427057220 /usr/local/include/tbb/enumerable_thread_specific.h
+	"concurrent_vector.h"
+	"tbb_thread.h"
+	"tbb_allocator.h"
+	"tbb_profiling.h"
+	"cache_aligned_allocator.h"
+	"aligned_space.h"
+	"internal/_template_helpers.h"
+	<string.h>
+	"machine/windows_api.h"
+	<pthread.h>
+
+1427057220 /usr/local/include/tbb/concurrent_vector.h
+	"tbb_stddef.h"
+	"tbb_exception.h"
+	"atomic.h"
+	"cache_aligned_allocator.h"
+	"blocked_range.h"
+	"tbb_machine.h"
+	"tbb_profiling.h"
+	<new>
+	<cstring>
+	<algorithm>
+	<iterator>
+	<limits>
+	<initializer_list>
+
+1427057220 /usr/local/include/tbb/tbb_exception.h
+	"tbb_stddef.h"
+	<exception>
+	<new>
+	<string>
+	"tbb_allocator.h"
+	<typeinfo>
+
+1427057220 /usr/local/include/tbb/tbb_allocator.h
+	"tbb_stddef.h"
+	<new>
+	<utility>
+	<cstring>
+
+1427057220 /usr/local/include/tbb/tbb_thread.h
+	"tbb_stddef.h"
+	"machine/windows_api.h"
+	<pthread.h>
+	"tick_count.h"
+	<iosfwd>
+
+1427057220 /usr/local/include/tbb/machine/windows_api.h
+	<xtl.h>
+	<windows.h>
+
+1427057220 /usr/local/include/tbb/tick_count.h
+	"tbb_stddef.h"
+	"machine/windows_api.h"
+	<ctime>
+	<sys/time.h>
+
+1427057220 /usr/local/include/tbb/internal/_template_helpers.h
+	<utility>
+
+1427057220 /usr/local/include/tbb/concurrent_hash_map.h
+	"tbb_stddef.h"
+	<iterator>
+	<utility>
+	<cstring>
+	<algorithm>
+	"cache_aligned_allocator.h"
+	"tbb_allocator.h"
+	"spin_rw_mutex.h"
+	"atomic.h"
+	"tbb_exception.h"
+	"tbb_profiling.h"
+	"internal/_concurrent_unordered_impl.h"
+	<initializer_list>
+	<typeinfo>
+	<stdio.h>
+
+1427057220 /usr/local/include/tbb/spin_rw_mutex.h
+	"tbb_stddef.h"
+	"tbb_machine.h"
+	"tbb_profiling.h"
+	"internal/_mutex_padding.h"
+	"internal/_x86_rtm_rw_mutex_impl.h"
+
+1427057220 /usr/local/include/tbb/internal/_mutex_padding.h
+
+1427057220 /usr/local/include/tbb/internal/_x86_rtm_rw_mutex_impl.h
+	"../tbb_stddef.h"
+	"../tbb_machine.h"
+	"../tbb_profiling.h"
+	"../spin_rw_mutex.h"
+
+1427057220 /usr/local/include/tbb/internal/_concurrent_unordered_impl.h
+	"../tbb_stddef.h"
+	<iterator>
+	<utility>
+	<functional>
+	<string>
+	<cstring>
+	<algorithm>
+	"../atomic.h"
+	"../tbb_exception.h"
+	"../tbb_allocator.h"
+	<initializer_list>
+
+1427057220 /usr/local/include/tbb/concurrent_lru_cache.h
+	<map>
+	<list>
+	"tbb_stddef.h"
+	"atomic.h"
+	"internal/_aggregator_impl.h"
+
+1427057220 /usr/local/include/tbb/internal/_aggregator_impl.h
+	"../atomic.h"
+	"../tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/concurrent_priority_queue.h
+	"atomic.h"
+	"cache_aligned_allocator.h"
+	"tbb_exception.h"
+	"tbb_stddef.h"
+	"tbb_profiling.h"
+	"internal/_aggregator_impl.h"
+	<vector>
+	<iterator>
+	<functional>
+	<initializer_list>
+	<type_traits>
+
+1427057220 /usr/local/include/tbb/concurrent_queue.h
+	"internal/_concurrent_queue_impl.h"
+
+1427057220 /usr/local/include/tbb/internal/_concurrent_queue_impl.h
+	"../tbb_stddef.h"
+	"../tbb_machine.h"
+	"../atomic.h"
+	"../spin_mutex.h"
+	"../cache_aligned_allocator.h"
+	"../tbb_exception.h"
+	"../tbb_profiling.h"
+	<new>
+	<utility>
+	<iterator>
+
+1427057220 /usr/local/include/tbb/spin_mutex.h
+	<cstddef>
+	<new>
+	"aligned_space.h"
+	"tbb_stddef.h"
+	"tbb_machine.h"
+	"tbb_profiling.h"
+	"internal/_mutex_padding.h"
+	"internal/_x86_eliding_mutex_impl.h"
+
+1427057220 /usr/local/include/tbb/internal/_x86_eliding_mutex_impl.h
+
+1427057220 /usr/local/include/tbb/concurrent_unordered_map.h
+	"internal/_concurrent_unordered_impl.h"
+
+1427057220 /usr/local/include/tbb/concurrent_unordered_set.h
+	"internal/_concurrent_unordered_impl.h"
+
+1427057220 /usr/local/include/tbb/critical_section.h
+	"machine/windows_api.h"
+	<pthread.h>
+	<errno.h>
+	"tbb_stddef.h"
+	"tbb_thread.h"
+	"tbb_exception.h"
+	"tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/flow_graph.h
+	"tbb_stddef.h"
+	"atomic.h"
+	"spin_mutex.h"
+	"null_mutex.h"
+	"spin_rw_mutex.h"
+	"null_rw_mutex.h"
+	"task.h"
+	"cache_aligned_allocator.h"
+	"tbb_exception.h"
+	"internal/_template_helpers.h"
+	"internal/_aggregator_impl.h"
+	"tbb_profiling.h"
+	<tuple>
+	"compat/tuple"
+	<list>
+	<queue>
+	"internal/_flow_graph_trace_impl.h"
+	"internal/_flow_graph_types_impl.h"
+	"internal/_flow_graph_impl.h"
+	"internal/_flow_graph_node_impl.h"
+	"internal/_flow_graph_join_impl.h"
+	"internal/_flow_graph_indexer_impl.h"
+
+1427057220 /usr/local/include/tbb/null_mutex.h
+	"tbb_stddef.h"
+
+1427057220 /usr/local/include/tbb/null_rw_mutex.h
+	"tbb_stddef.h"
+
+1427057220 /usr/local/include/tbb/task.h
+	"tbb_stddef.h"
+	"tbb_machine.h"
+	<climits>
+
+1427057220 /usr/local/include/tbb/compat/tuple
+	<utility>
+	"../tbb_stddef.h"
+
+1427057220 /usr/local/include/tbb/internal/_flow_graph_trace_impl.h
+	"../tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/internal/_flow_graph_types_impl.h
+
+1427057220 /usr/local/include/tbb/internal/_flow_graph_impl.h
+
+1427057220 /usr/local/include/tbb/internal/_flow_graph_node_impl.h
+	"_flow_graph_item_buffer_impl.h"
+
+1427057220 /usr/local/include/tbb/internal/_flow_graph_item_buffer_impl.h
+	"tbb/internal/_flow_graph_types_impl.h"
+
+1427057220 /usr/local/include/tbb/internal/_flow_graph_join_impl.h
+	"_flow_graph_types_impl.h"
+	"_flow_graph_tagged_buffer_impl.h"
+
+1427057220 /usr/local/include/tbb/internal/_flow_graph_tagged_buffer_impl.h
+
+1427057220 /usr/local/include/tbb/internal/_flow_graph_indexer_impl.h
+	"tbb/internal/_flow_graph_types_impl.h"
+
+1427057220 /usr/local/include/tbb/mutex.h
+	"machine/windows_api.h"
+	<pthread.h>
+	<new>
+	"aligned_space.h"
+	"tbb_stddef.h"
+	"tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/parallel_do.h
+	"internal/_range_iterator.h"
+	"internal/_template_helpers.h"
+	"task.h"
+	"aligned_space.h"
+	<iterator>
+
+1427057220 /usr/local/include/tbb/internal/_range_iterator.h
+	"../tbb_stddef.h"
+	<iterator>
+
+1427057220 /usr/local/include/tbb/parallel_for.h
+	<new>
+	"task.h"
+	"partitioner.h"
+	"blocked_range.h"
+	"tbb_exception.h"
+	"../serial/tbb/parallel_for.h"
+
+1427057220 /usr/local/include/tbb/partitioner.h
+	"task.h"
+	"aligned_space.h"
+	"atomic.h"
+	"internal/_template_helpers.h"
+
+1427057220 /usr/local/include/tbb/parallel_for_each.h
+	"parallel_do.h"
+
+1427057220 /usr/local/include/tbb/parallel_invoke.h
+	"task.h"
+	<utility>
+
+1427057220 /usr/local/include/tbb/parallel_reduce.h
+	<new>
+	"task.h"
+	"aligned_space.h"
+	"partitioner.h"
+	"tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/parallel_scan.h
+	"task.h"
+	"aligned_space.h"
+	<new>
+	"partitioner.h"
+
+1427057220 /usr/local/include/tbb/parallel_sort.h
+	"parallel_for.h"
+	"blocked_range.h"
+	"internal/_range_iterator.h"
+	<algorithm>
+	<iterator>
+	<functional>
+
+1427057220 /usr/local/include/tbb/pipeline.h
+	"atomic.h"
+	"task.h"
+	"tbb_allocator.h"
+	<cstddef>
+	<type_traits>
+
+1427057220 /usr/local/include/tbb/queuing_mutex.h
+	"tbb_config.h"
+	<cstring>
+	"atomic.h"
+	"tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/queuing_rw_mutex.h
+	"tbb_config.h"
+	<cstring>
+	"atomic.h"
+	"tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/reader_writer_lock.h
+	"tbb_thread.h"
+	"tbb_allocator.h"
+	"atomic.h"
+
+1427057220 /usr/local/include/tbb/recursive_mutex.h
+	"machine/windows_api.h"
+	<pthread.h>
+	<new>
+	"aligned_space.h"
+	"tbb_stddef.h"
+	"tbb_profiling.h"
+
+1427057220 /usr/local/include/tbb/task_arena.h
+	"task.h"
+	"tbb_exception.h"
+	"atomic.h"
+
+1427057220 /usr/local/include/tbb/task_group.h
+	"task.h"
+	"tbb_exception.h"
+
+1427057220 /usr/local/include/tbb/task_scheduler_init.h
+	"tbb_stddef.h"
+	"limits.h"
+
+1427057220 /usr/local/include/tbb/task_scheduler_observer.h
+	"atomic.h"
+	"task_arena.h"
+
+1427064174 source:/home/xinyu/projects/Mechanic/FaceDetector.cpp
+	"FaceDetector.h"
+
+1427064156 /home/xinyu/projects/Mechanic/FaceDetector.h
+	"stdafx.h"
+	"FrameProcessor.h"
+
+1427064244 /home/xinyu/projects/Mechanic/stdafx.h
+	<iostream>
+	<thread>
+	<vector>
+	<opencv2/opencv.hpp>
+	<opencv2/core/core.hpp>
+	<tbb/tbb.h>
+	<tbb/concurrent_queue.h>
+	<tesseract/baseapi.h>
+	<leptonica/allheaders.h>
+
+1427064156 /home/xinyu/projects/Mechanic/FrameProcessor.h
+	"stdafx.h"
+
+1427064223 source:/home/xinyu/projects/Mechanic/FrameProcessor.cpp
+	"FrameProcessor.h"
 

@@ -25,18 +25,10 @@
 
 using namespace std;
 using namespace cv;
+using namespace tbb;
 using namespace tesseract;
-namespace lf = boost::lockfree;
 
 const int OUTPUT_BUFFER_SIZE = 40;
-
-typedef struct tagThreadData
-{
-    int seq;
-    Mat inputImage;
-    Mat outputImage1;
-    Mat outputImage2;
-}
 
 bool DetectFace(Mat& inputImage, Mat& outputImage, CascadeClassifier& classifier)
 {
@@ -292,25 +284,25 @@ int main(int argc, char** argv)
 	/*  Here we use the boost::lockfree::queue with capacity set.
         This can ensure the thread-safty.
 	*/
-	lf::queue<Mat, lf::capacity(OUTPUT_BUFFER_SIZE)> inputFrameBuffer;
-	lf::queue<Mat, lf::capacity(OUTPUT_BUFFER_SIZE)> faceFrameBuffer;
-	lf::queue<Mat, lf::capacity(OUTPUT_BUFFER_SIZE)> textFrameBuffer;
-	lf::queue<Mat, lf::capacity(OUTPUT_BUFFER_SIZE)> binaryFrameBuffer;
+	concurrent_queue<Mat> inputFrameBuffer;
+	concurrent_queue<Mat> faceFrameBuffer;
+	concurrent_queue<Mat> textFrameBuffer;
+	concurrent_queue<Mat> binaryFrameBuffer;
 
 	/* Initial buffering for 10 frames */
 	cout << "Buffering....." << endl;
 	bool bufferDone = false;
-	const initialBufferSize = 10;
+	const int initialBufferSize = 10;
 	while (!bufferDone)
 	{
-        bufferDone &= inputFrameBuffer.sizec++ namespace alias() >= initialBufferSize;
-        cout << "Input buffer size now is " << inputFrameBuffer.size() << endl;
-        bufferDone &= faceFrameBuffer.size() >= initialBufferSize;
-        cout << "Face detection buffer size now is " << faceFrameBuffer.size() << endl;
-        bufferDone &= textFrameBuffer.size() >= initialBufferSize;
-        cout << "Text localization buffer size now is " << textFrameBuffer.size() << endl;
-        bufferDone &= binaryFrameBuffer.size() >= initialBufferSize - 10;   // Binary result does not appear until text are detected
-        cout << "Binary image buffer size now is " << binaryFrameBuffer.size() << endl;
+//        bufferDone &= inputFrameBuffer.size() >= initialBufferSize;
+//        cout << "Input buffer size now is " << inputFrameBuffer.size() << endl;
+//        bufferDone &= faceFrameBuffer.size() >= initialBufferSize;
+//        cout << "Face detection buffer size now is " << faceFrameBuffer.size() << endl;
+//        bufferDone &= textFrameBuffer.size() >= initialBufferSize;
+//        cout << "Text localization buffer size now is " << textFrameBuffer.size() << endl;
+//        bufferDone &= binaryFrameBuffer.size() >= initialBufferSize - 10;   // Binary result does not appear until text are detected
+//        cout << "Binary image buffer size now is " << binaryFrameBuffer.size() << endl;
 	}
 	/*
         The output image contains four parts
@@ -329,35 +321,35 @@ int main(int argc, char** argv)
         4 - Binary image of the text localization
     */
 	Mat outputFrame(height*2, width*2, CV_8UC3);
-	Mat inputFrame(height, width, CV_8UC3);
+	//Mat inputFrame(height, width, CV_8UC3);
 	Mat faceFrame(height, width, CV_8UC3);
 	Mat textFrame(height, width, CV_8UC3);
 	Mat binaryFrame(height, width, CV_8UC3);
 	namedWindow("Result");
 	do { // Main loop
-        if (!inputFrameBuffer.pop(inputFrame))
+        if (!inputFrameBuffer.try_pop(inputFrame))
             cout << "Warning: Input frame buffer underflow!" << endl;
         else
             inputFrame.copyTo(outputFrame(Rect(0, 0, width, height)));
 
-        if (!faceFrameBuffer.pop(faceFrame))
+        if (!faceFrameBuffer.try_pop(faceFrame))
             cout << "Warning: Face detection result buffer underflow!" << endl;
         else
             faceFrame.copyTo(outputFrame(Rect(width, 0, width, height)));
 
-        if (!textFrameBuffer.pop(textFrame))
+        if (!textFrameBuffer.try_pop(textFrame))
             cout << "Warning: Text localization result buffer underflow!" << endl;
         else
             textFrame.copyTo(outputFrame(Rect(0, height, width, height)));
 
-        if (!binaryFrameBuffer.pop(binaryFrame))
+        if (!binaryFrameBuffer.try_pop(binaryFrame))
             cout << "Warning: Binary image result buffer underflow!" << endl;
         else
             binaryFrame.copyTo(outputFrame(Rect(width, height, width, height)));
 
         imshow("Result", outputFrame);
         vw << outputFrame;
-	} while (waitKey(40) < 0)
+	} while (waitKey(40) < 0);
     cout << "Done!" << endl;
 	return 0;
 }

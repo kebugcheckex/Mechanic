@@ -11,13 +11,13 @@
 #include <opencv2/core/core.hpp>
 
 /* boost headers */
-#include <boost/lockfree/queue.hpp>
+
+/* TBB headers */
+#include <tbb/tbb.h>
+#include <tbb/concurrent_queue.h>
 
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
 
-
-
-#define OUTPUT_BUFFER_SIZE 40
 
 #endif // STDAFX_H_INCLUDED

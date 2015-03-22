@@ -47,6 +47,7 @@
 				<Option parameters="http://192.168.0.9:8090/live.mpg temp.mpg" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -71,6 +72,8 @@
 					<Add library="/usr/local/lib/libopencv_calib3d.so" />
 					<Add library="/usr/local/lib/liblept.so" />
 					<Add library="/usr/local/lib/libtesseract.so" />
+					<Add library="/usr/local/lib/libtbb.so" />
+					<Add library="/usr/local/lib/libtbbmalloc.so" />
 				</Linker>
 			</Target>
 		</Build>
@@ -81,6 +84,11 @@
 		<Linker>
 			<Add option="`pkg-config --cflags opencv --libs opencv`" />
 		</Linker>
+		<Unit filename="FaceDetector.cpp" />
+		<Unit filename="FaceDetector.h" />
+		<Unit filename="FrameProcessor.cpp" />
+		<Unit filename="FrameProcessor.h" />
+		<Unit filename="TextLocalizer.h" />
 		<Unit filename="fast_clustering.cpp" />
 		<Unit filename="group_classifier.cpp" />
 		<Unit filename="group_classifier.h" />
@@ -96,6 +104,7 @@
 		<Unit filename="region.h" />
 		<Unit filename="region_classifier.cpp" />
 		<Unit filename="region_classifier.h" />
+		<Unit filename="stdafx.h" />
 		<Unit filename="text_extract.h" />
 		<Unit filename="utils.h" />
 		<Extensions>
