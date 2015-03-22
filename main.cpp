@@ -10,10 +10,7 @@
     - Xinyu Chen
 */
 
-#include <iostream>
-#include <opencv2/opencv.hpp>
-#include <tesseract/baseapi.h>
-#include <leptonica/allheaders.h>
+#include "stdafx.h"
 
 #include "region.h"
 #include "mser.h"
@@ -29,20 +26,21 @@
 using namespace std;
 using namespace cv;
 using namespace tesseract;
+namespace lf = boost::lockfree;
+
+const int OUTPUT_BUFFER_SIZE = 40;
+
+typedef struct tagThreadData
+{
+    int seq;
+    Mat inputImage;
+    Mat outputImage1;
+    Mat outputImage2;
+}
 
 bool DetectFace(Mat& inputImage, Mat& outputImage, CascadeClassifier& classifier)
 {
-    cout << "Debug checkpoint: Detect Face" << endl;
-	vector<Rect> objects;
-	bool detected = false;
-	inputImage.copyTo(outputImage);
-	Mat grayImage;
-    cvtColor(inputImage, grayImage, COLOR_BGR2GRAY);
-    classifier.detectMultiScale(grayImage, objects, 1.3, 5);
-    cout << "Objects detected:" << objects.size() << "\t";
-    for(int i = 0; i < objects.size(); ++i)
-        rectangle(outputImage, objects[i], Scalar(0,255,0), 2);
-    return true;
+
 }
 
 bool DetectText(Mat& inputImage, Mat& outputImage, Mat& binaryImage)
@@ -276,7 +274,6 @@ int main(int argc, char** argv)
         cerr << "Error: Failed to open the input file " << inputFileName << endl;
         return 2;
 	}
-	namedWindow("Result");
 	Mat inputFrame;
 	vc >> inputFrame;
 	int width = inputFrame.cols;
@@ -292,50 +289,75 @@ int main(int argc, char** argv)
         return 3;
 	}
 
-	// TODO check whether the xml file exists
-	CascadeClassifier face_cascade = CascadeClassifier("/home/xinyu/Videos/haarcascade_frontalface_default.xml");
+	/*  Here we use the boost::lockfree::queue with capacity set.
+        This can ensure the thread-safty.
+	*/
+	lf::queue<Mat, lf::capacity(OUTPUT_BUFFER_SIZE)> inputFrameBuffer;
+	lf::queue<Mat, lf::capacity(OUTPUT_BUFFER_SIZE)> faceFrameBuffer;
+	lf::queue<Mat, lf::capacity(OUTPUT_BUFFER_SIZE)> textFrameBuffer;
+	lf::queue<Mat, lf::capacity(OUTPUT_BUFFER_SIZE)> binaryFrameBuffer;
 
+	/* Initial buffering for 10 frames */
+	cout << "Buffering....." << endl;
+	bool bufferDone = false;
+	const initialBufferSize = 10;
+	while (!bufferDone)
+	{
+        bufferDone &= inputFrameBuffer.sizec++ namespace alias() >= initialBufferSize;
+        cout << "Input buffer size now is " << inputFrameBuffer.size() << endl;
+        bufferDone &= faceFrameBuffer.size() >= initialBufferSize;
+        cout << "Face detection buffer size now is " << faceFrameBuffer.size() << endl;
+        bufferDone &= textFrameBuffer.size() >= initialBufferSize;
+        cout << "Text localization buffer size now is " << textFrameBuffer.size() << endl;
+        bufferDone &= binaryFrameBuffer.size() >= initialBufferSize - 10;   // Binary result does not appear until text are detected
+        cout << "Binary image buffer size now is " << binaryFrameBuffer.size() << endl;
+	}
+	/*
+        The output image contains four parts
+        +-------+-------+
+        |       |       |
+        |   1   |   2   |
+        |       |       |
+        +-------+-------+
+        |       |       |
+        |   3   |   4   |
+        |       |       |
+        +-------+-------+
+        1 - Original input frame
+        2 - Face detection result
+        3 - Text localization result
+        4 - Binary image of the text localization
+    */
 	Mat outputFrame(height*2, width*2, CV_8UC3);
-	cout << "Debug: width=" << width << "\theight=" << height << endl;
-    Mat faceResult(height, width, CV_8UC3);
-    Mat textResult(height, width, CV_8UC3);
-    Mat textBinary(height, width, CV_8UC3);
-    textBinary = Scalar(0, 0, 0);
-	int total_frames = 0;
-	int frame_count = 0;
-	do {
-        if (frame_count % 5 == 0)
-        {
-            DetectFace(inputFrame, faceResult, face_cascade);
-            DetectText(inputFrame, textResult, textBinary);
-        }
-        frame_count++;
-        /*
-            The output image consists of four parts
-            +-------+-------+
-            |       |       |
-            |   1   |   2   |
-            |       |       |
-            +-------+-------+
-            |       |       |
-            |   3   |   4   |
-            |       |       |
-            +-------+-------+
-            1 - Original Image
-            2 - Face Detection Result
-            3 - Text Detection Result
-            4 - Text Binary Image
-        */
-        inputFrame.copyTo(outputFrame(Rect(0, 0, width, height)));
-        faceResult.copyTo(outputFrame(Rect(width, 0, width, height)));
-        textResult.copyTo(outputFrame(Rect(0, height, width, height)));
-        textBinary.copyTo(outputFrame(Rect(width, height, width, height)));
+	Mat inputFrame(height, width, CV_8UC3);
+	Mat faceFrame(height, width, CV_8UC3);
+	Mat textFrame(height, width, CV_8UC3);
+	Mat binaryFrame(height, width, CV_8UC3);
+	namedWindow("Result");
+	do { // Main loop
+        if (!inputFrameBuffer.pop(inputFrame))
+            cout << "Warning: Input frame buffer underflow!" << endl;
+        else
+            inputFrame.copyTo(outputFrame(Rect(0, 0, width, height)));
+
+        if (!faceFrameBuffer.pop(faceFrame))
+            cout << "Warning: Face detection result buffer underflow!" << endl;
+        else
+            faceFrame.copyTo(outputFrame(Rect(width, 0, width, height)));
+
+        if (!textFrameBuffer.pop(textFrame))
+            cout << "Warning: Text localization result buffer underflow!" << endl;
+        else
+            textFrame.copyTo(outputFrame(Rect(0, height, width, height)));
+
+        if (!binaryFrameBuffer.pop(binaryFrame))
+            cout << "Warning: Binary image result buffer underflow!" << endl;
+        else
+            binaryFrame.copyTo(outputFrame(Rect(width, height, width, height)));
+
         imshow("Result", outputFrame);
         vw << outputFrame;
-        if (waitKey(20) >= 0) break;
-	} while (vc.read(inputFrame));
-	cout << "Reach the end of the input file" << endl;
-    cout << "Total frames = " << total_frames << endl;
+	} while (waitKey(40) < 0)
     cout << "Done!" << endl;
 	return 0;
 }
