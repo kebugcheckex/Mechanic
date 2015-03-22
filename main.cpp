@@ -337,6 +337,5 @@ int main(int argc, char** argv)
 	cout << "Reach the end of the input file" << endl;
     cout << "Total frames = " << total_frames << endl;
     cout << "Done!" << endl;
-#endif
 	return 0;
 }
