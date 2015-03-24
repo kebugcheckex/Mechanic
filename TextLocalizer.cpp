@@ -1,17 +1,76 @@
 #include "TextLocalizer.h"
+#include "region.h"
+#include "mser.h"
+#include "max_meaningful_clustering.h"
+#include "region_classifier.h"
+#include "group_classifier.h"
+#include "utils.h"
 
 using namespace std;
 using namespace cv;
 using namespace tesseract;
 
+TextLocalizer::TextLocalizer()
+{
+    inputBufferPointer = 0;
+    outputBufferPointer = 0;
+}
+
+bool TextLocalizer::PutFrame(Mat& frame)
+{
+    if (inputBufferPointer > BUFFER_SIZE)
+    {
+        cout << "TextLocalizer: input buffer overflow. Frame is dropped." << endl;
+        return false;
+    }
+    else
+    {
+        m_inputBuffer.push(frame);
+        inputBufferPointer++;
+        cout << "TextLocalizer: just put a frame, buffer size = " << m_inputBuffer.unsafe_size() << endl;
+    }
+    return true;
+}
+
+bool TextLocalizer::GetFrame(Mat& frame)
+{
+    if (!m_outputBuffer.try_pop(frame))
+    {
+        cout << "TextLocalizer: output buffer underflow!" << endl;
+        return false;
+    }
+    else
+    {
+        outputBufferPointer--;
+    }
+    return true;
+}
+
+void TextLocalizer::Run()
+{
+    running = true;
+    m_pThread = new thread(&TextLocalizer::process, this);
+}
+
+void TextLocalizer::Stop()
+{
+    running = false;
+}
+
 void TextLocalizer::process()
 {
     cout << "Entering TextLocalizer::process()" << endl;
     Mat inputImage, outputImage;
-    while (true)
+    while (running)
     {
         if (!m_inputBuffer.try_pop(inputImage))
+        {
+            cout << "TextLocalizer input buffer size = " << m_inputBuffer.unsafe_size() << endl;
+            cout << "TextLocalizer input buffer underflow!" << endl;
+            this_thread::sleep_for(chrono::milliseconds(100));
             continue;
+        }
+        inputBufferPointer--;
         inputImage.copyTo(outputImage);
         tesseract::TessBaseAPI api;
         api.Init(NULL, "eng");
@@ -211,8 +270,16 @@ void TextLocalizer::process()
                     Point coord = Point(box->x-15, box->y );
                     addText(outputImage, ocrResult, coord, font );
                 }
+                cout << "OutputImage size " << outputImage.cols << " " << outputImage.rows << endl;
                 cout << "Grey size " << grey.cols << " " << grey.rows << endl;
-                //cvtColor(grey, binaryImage, CV_GRAY2RGB);
+                cvtColor(grey, grey, CV_GRAY2RGB);
+                Mat output(outputImage.rows, outputImage.cols*2, CV_8UC3);
+                Mat left(output, Rect(0, 0, outputImage.cols, outputImage.rows));
+                outputImage.copyTo(left);
+                Mat right(output, Rect(outputImage.cols, 0, grey.cols, grey.rows));
+                grey.copyTo(right);
+                cout << "+++++++++++++++++++PUT+++++++++++++++" << endl;
+                m_outputBuffer.push(output);
             }
             regions.clear();
         }

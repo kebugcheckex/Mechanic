@@ -27,14 +27,15 @@ int main(int argc, char** argv)
         cout << "Input can be either a file on the disk or a URL to a video stream." << endl;
         return 1;
     }
-
-	concurrent_queue<Mat> faceFrameBuffer;
-	concurrent_queue<Mat> textFrameBuffer;
-	concurrent_queue<Mat> binaryFrameBuffer;
+    ConcurrentMatQueue inputBuffer;
+	ConcurrentMatQueue faceFrameBuffer;
+	ConcurrentMatQueue textFrameBuffer;
+	ConcurrentMatQueue binaryFrameBuffer;
 
     string inputFileName(argv[1]);
     FaceDetector faceDetector;
-    VideoReader videoReader(inputFileName, &faceDetector);
+    TextLocalizer textLocalizer;
+    VideoReader videoReader(inputFileName, &inputBuffer, &faceDetector, &textLocalizer);
 
     int width = videoReader.GetFrameSize().width;
     int height = videoReader.GetFrameSize().height;
@@ -49,6 +50,7 @@ int main(int argc, char** argv)
 	}
     videoReader.Run();
 	faceDetector.Run();
+	textLocalizer.Run();
 	/* Initial buffering for 10 frames */
 	cout << "Buffering....." << endl;
 	bool bufferDone = false;
@@ -72,14 +74,30 @@ int main(int argc, char** argv)
 	Mat outputFrame(height*2, width*2, CV_8UC3);
 	Mat inputFrame(height, width, CV_8UC3);
 	Mat faceFrame(height, width, CV_8UC3);
-	Mat textFrame(height, width, CV_8UC3);
-	Mat binaryFrame(height, width, CV_8UC3);
+	Mat textFrame(height, width*2, CV_8UC3);
 	namedWindow("Result");
 	do {
-
-        faceDetector.GetFrame(faceFrame);
-        imshow("Result", faceFrame);
-        //vw << outputFrame;
+        if (inputBuffer.try_pop(inputFrame))
+        {
+            Mat part1(outputFrame, Rect(0, 0, width, height));
+            inputFrame.copyTo(part1);
+        }
+        else
+        {
+            cout << "Warning: input buffer underflow!" << endl;
+        }
+        if (faceDetector.GetFrame(faceFrame))
+        {
+            Mat part2(outputFrame, Rect(width, 0, width, height));
+            faceFrame.copyTo(part2);
+        }
+        if (textLocalizer.GetFrame(textFrame))
+        {
+            Mat part34(outputFrame, Rect(0, height, width*2, height));
+            textFrame.copyTo(part34);
+        }
+        imshow("Result", outputFrame);
+        vw << outputFrame;
 	} while (waitKey(40) < 0);
 	faceDetector.Stop();
     cout << "Done!" << endl;

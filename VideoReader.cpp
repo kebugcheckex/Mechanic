@@ -3,8 +3,8 @@
 using namespace std;
 using namespace cv;
 
-VideoReader::VideoReader(string fileName, FaceDetector* faceDetector)
-    : m_pfaceDetector(faceDetector)
+VideoReader::VideoReader(std::string fileName, ConcurrentMatQueue* inputBuffer, FaceDetector* pFace, TextLocalizer* pText)
+    : m_pInputBuffer(inputBuffer), m_pfaceDetector(pFace), m_pTextLocalizer(pText)
 {
     if (fileName == "0")   // If the input is string "0", we neet to convert it to number 0
         m_video = VideoCapture(0);
@@ -17,10 +17,8 @@ VideoReader::VideoReader(string fileName, FaceDetector* faceDetector)
         exit(2);
     }
 
-    Mat frame;
-    m_video >> frame;   // Steal one frame for size detection
-    m_Width = frame.cols;
-    m_Height = frame.rows;
+    m_Width = 320;
+    m_Height = 240;
     m_bRunning = false;
 }
 
@@ -47,8 +45,10 @@ void VideoReader::readFrame()
     Mat frame;
     while (m_video.read(frame) && m_bRunning)
     {
+        cv::resize(frame, frame, Size(320, 240));
+        m_pInputBuffer->push(frame);
         m_pfaceDetector->PutFrame(frame);
-        cout << "A frame is put into the Face detector's buffer." << endl;
-        this_thread::sleep_for(chrono::milliseconds(400));
+        m_pTextLocalizer->PutFrame(frame);
+        this_thread::sleep_for(chrono::milliseconds(10));
     }
 }

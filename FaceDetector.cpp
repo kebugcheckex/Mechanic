@@ -17,14 +17,13 @@ bool FaceDetector::PutFrame(Mat& frame)
 {
     if (inputBufferPointer > BUFFER_SIZE)
     {
-        cout << "Warning: Face detector input buffer overflow. Frame is dropped." << endl;
+        cout << "FaceDetector: input buffer overflow. Frame is dropped." << endl;
         return false;
     }
     else
     {
         m_inputBuffer.push(frame);
         inputBufferPointer++;
-        cout << "Face: input buffer pointer = " << m_inputBuffer.unsafe_size() << endl;
     }
     return true;
 }
@@ -33,7 +32,7 @@ bool FaceDetector::GetFrame(Mat& frame)
 {
     if (!m_outputBuffer.try_pop(frame))
     {
-        cout << "Warning: internal error!" << endl;
+        cout << "FaceDetector: output buffer underflow!" << endl;
         return false;
     }
     else
@@ -61,9 +60,9 @@ void FaceDetector::process()
     vector<Rect> objects;
     while (running)
     {
-        cout << "Process: input buffer size = " << m_inputBuffer.unsafe_size() << endl;
         if (m_inputBuffer.try_pop(inputFrame))
         {
+            inputBufferPointer--;
             outputFrame = inputFrame;
             cvtColor(inputFrame, grayImage, COLOR_BGR2GRAY);
             classifier.detectMultiScale(grayImage, objects, 1.3, 5);
@@ -75,9 +74,8 @@ void FaceDetector::process()
         }
         else
         {
-            cout << "Warning: Face detector input buffer under flow!" << endl;
+            cout << "FaceDetector: input buffer under flow!" << endl;
         }
         objects.clear();
-        this_thread::sleep_for(chrono::milliseconds(500));
     }
 }
