@@ -159,14 +159,10 @@
 	<set>
 	<valarray>
 
-1427064443 source:/home/xinyu/projects/Mechanic/main.cpp
+1427214012 source:/home/xinyu/projects/Mechanic/main.cpp
 	"stdafx.h"
-	"region.h"
-	"mser.h"
-	"max_meaningful_clustering.h"
-	"region_classifier.h"
-	"group_classifier.h"
-	"utils.h"
+	"FaceDetector.h"
+	"VideoReader.h"
 
 1426049439 source:/home/xinyu/projects/Mechanic/fast_clustering.cpp
 	<limits>
@@ -1267,15 +1263,15 @@
 	"atomic.h"
 	"task_arena.h"
 
-1427064174 source:/home/xinyu/projects/Mechanic/FaceDetector.cpp
+1427213963 source:/home/xinyu/projects/Mechanic/FaceDetector.cpp
 	"FaceDetector.h"
 
-1427064156 /home/xinyu/projects/Mechanic/FaceDetector.h
+1427213963 /home/xinyu/projects/Mechanic/FaceDetector.h
 	"stdafx.h"
-	"FrameProcessor.h"
 
-1427064244 /home/xinyu/projects/Mechanic/stdafx.h
+1427154800 /home/xinyu/projects/Mechanic/stdafx.h
 	<iostream>
+	<mutex>
 	<thread>
 	<vector>
 	<opencv2/opencv.hpp>
@@ -1285,9 +1281,30 @@
 	<tesseract/baseapi.h>
 	<leptonica/allheaders.h>
 
-1427064156 /home/xinyu/projects/Mechanic/FrameProcessor.h
+1427134674 /home/xinyu/projects/Mechanic/FrameProcessor.h
 	"stdafx.h"
 
-1427064223 source:/home/xinyu/projects/Mechanic/FrameProcessor.cpp
+1427152435 source:/home/xinyu/projects/Mechanic/FrameProcessor.cpp
 	"FrameProcessor.h"
+
+1427213981 /home/xinyu/projects/Mechanic/VideoReader.h
+	"stdafx.h"
+	"FrameProcessor.h"
+	"FaceDetector.h"
+
+1427213981 source:/home/xinyu/projects/Mechanic/VideoReader.cpp
+	"VideoReader.h"
+
+1427134810 source:/home/xinyu/projects/Mechanic/TextLocalizer.cpp
+	"TextLocalizer.h"
+
+1427134798 /home/xinyu/projects/Mechanic/TextLocalizer.h
+	"stdafx.h"
+	"FrameProcessor.h"
+	"region.h"
+	"mser.h"
+	"max_meaningful_clustering.h"
+	"region_classifier.h"
+	"group_classifier.h"
+	"utils.h"
 

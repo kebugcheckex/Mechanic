@@ -3,6 +3,7 @@
 
 /* std headers */
 #include <iostream>
+#include <mutex>
 #include <thread>
 #include <vector>
 
@@ -19,5 +20,7 @@
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
 
+/* alias */
+typedef tbb::concurrent_queue<cv::Mat> ConcurrentMatQueue;
 
 #endif // STDAFX_H_INCLUDED
