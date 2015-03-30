@@ -10,7 +10,9 @@ public:
     bool GetFrame(cv::Mat& frame);
     void Run();
     void Stop();
+    cv::Size GetSize();
 private:
+    cv::Size m_size;
     bool running;
     cv::Mat currentFrame;
     cv::VideoCapture vc;

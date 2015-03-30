@@ -18,6 +18,9 @@ VideoReader::VideoReader(string fileName)
         cerr << "Error: Failed to open the input file!" << endl;
         exit(1);
     }
+    Mat temp;
+    vc >> temp;
+    m_size = Size(temp.cols, temp.rows);
     running = false;
     currentFrame = Scalar(0, 0, 0);
 }
@@ -42,6 +45,10 @@ void VideoReader::ReadThread()
     }
 }
 
+Size VideoReader::GetSize()
+{
+    return m_size;
+}
 void VideoReader::Run()
 {
     if (!running)

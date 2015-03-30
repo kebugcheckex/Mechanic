@@ -18,6 +18,7 @@ class TextDetector
 {
 public:
     TextDetector(VideoReader* pVideo);
+    bool GetResults(TextResult& pResults);
     void Run();
     void Stop();
 protected:

@@ -19,6 +19,7 @@
 #include <mutex>
 #include <thread>
 #include <string>
+#include <vector>
 // OpenCV headers
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -31,10 +32,11 @@
 
 typedef std::vector<cv::Rect> FaceResult;
 
-typedef struct tagTextResult
+typedef struct tagTextInfo
 {
-    std::vector<cv::Rect> boxes;
-    std::vector<std::string> texts;
-    int numObjects;
-} TextResult;
+    cv::Rect box;
+    std::string text;
+} TextInfo;
+
+typedef std::vector<TextInfo> TextResult;
 #endif // STDAFX_H_INCLUDED

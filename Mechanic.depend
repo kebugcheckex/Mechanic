@@ -159,17 +159,11 @@
 	<set>
 	<valarray>
 
-1427694058 source:/home/xinyu/projects/Mechanic/main.cpp
-	<iostream>
-	<opencv2/opencv.hpp>
-	<tesseract/baseapi.h>
-	<leptonica/allheaders.h>
-	"region.h"
-	"mser.h"
-	"max_meaningful_clustering.h"
-	"region_classifier.h"
-	"group_classifier.h"
-	"utils.h"
+1427698506 source:/home/xinyu/projects/Mechanic/main.cpp
+	"stdafx.h"
+	"VideoReader.h"
+	"FaceDetector.h"
+	"TextDetector.h"
 
 1426049439 source:/home/xinyu/projects/Mechanic/fast_clustering.cpp
 	<limits>
@@ -686,7 +680,9 @@
 1426049439 /home/xinyu/projects/Mechanic/min_bounding_box.h
 	<vector>
 
-1426049439 /home/xinyu/projects/Mechanic/utils.h
+1427699220 /home/xinyu/projects/Mechanic/utils.h
+	"stdafx.h"
+	"region.h"
 
 1426049439 source:/home/xinyu/projects/Mechanic/max_meaningful_clustering.cpp
 	"max_meaningful_clustering.h"
@@ -1277,16 +1273,36 @@
 	"stdafx.h"
 	"VideoReader.h"
 
-1427694246 /home/xinyu/projects/Mechanic/stdafx.h
+1427699203 /home/xinyu/projects/Mechanic/stdafx.h
+	<cstdio>
 	<iostream>
 	<mutex>
 	<thread>
 	<string>
+	<vector>
 	<opencv2/core/core.hpp>
 	<opencv2/highgui/highgui.hpp>
 	<opencv2/objdetect/objdetect.hpp>
 	<opencv2/imgproc/imgproc.hpp>
+	<tesseract/baseapi.h>
+	<leptonica/allheaders.h>
 
-1427684914 /home/xinyu/projects/Mechanic/VideoReader.h
+1427698464 /home/xinyu/projects/Mechanic/VideoReader.h
 	"stdafx.h"
+
+1427698464 source:/home/xinyu/projects/Mechanic/VideoReader.cpp
+	"VideoReader.h"
+
+1427698774 /home/xinyu/projects/Mechanic/TextDetector.h
+	"stdafx.h"
+	"VideoReader.h"
+	"region.h"
+	"mser.h"
+	"max_meaningful_clustering.h"
+	"region_classifier.h"
+	"group_classifier.h"
+	"utils.h"
+
+1427698617 source:/home/xinyu/projects/Mechanic/TextDetector.cpp
+	"TextDetector.h"
 

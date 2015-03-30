@@ -27,25 +27,33 @@ void TextDetector::Stop()
     }
 }
 
+bool TextDetector::GetResults(TextResult& pResults)
+{
+    mtx.lock();
+    pResults = m_results;
+    mtx.unlock();
+    return true;
+}
+
 void TextDetector::WorkingThread()
 {
     Mat inputFrame, grey, lab_img, gradient_magnitude, segmentation, all_segmentations;
-    MSER mser8(false, 25, 0.000008, 0.03, 1, 0.7);
+    ::MSER mser8(false, 25, 0.000008, 0.03, 1, 0.7);
     RegionClassifier region_boost("boost_train/trained_boost_char.xml", 0);
     GroupClassifier  group_boost("boost_train/trained_boost_groups.xml", &region_boost);
     vector<Region> regions;
 
     while (running)
     {
-        pVideo->GetFrame(inputFrame);
+        m_pVideoReader->GetFrame(inputFrame);
 
-        cvtColor(inputImage, grey, CV_BGR2GRAY);
-        cvtColor(inputImage, lab_img, CV_BGR2Lab);
+        cvtColor(inputFrame, grey, CV_BGR2GRAY);
+        cvtColor(inputFrame, lab_img, CV_BGR2Lab);
 
-        gradient_magnitude = Mat_<double>(inputImage.size());
+        gradient_magnitude = Mat_<double>(inputFrame.size());
         get_gradient_magnitude( grey, gradient_magnitude);
 
-        segmentation = Mat::zeros(inputImage.size(),CV_8UC3);
+        segmentation = Mat::zeros(inputFrame.size(),CV_8UC3);
         all_segmentations = Mat::zeros(240,320*11,CV_8UC3);     // TODO hard-coded parameters
 
         for (int step = 1; step < 3; step++)
@@ -82,8 +90,8 @@ void TextDetector::WorkingThread()
                 int count = 0;
                 for (int i = 0; i < regions.size(); i++)
                 {
-                    data[count] = (t_float)(regions.at(i).bbox_.x+regions.at(i).bbox_.width/2)/inputImage.cols;
-                    data[count+1] = (t_float)(regions.at(i).bbox_.y+regions.at(i).bbox_.height/2)/inputImage.rows;
+                    data[count] = (t_float)(regions.at(i).bbox_.x+regions.at(i).bbox_.width/2)/inputFrame.cols;
+                    data[count+1] = (t_float)(regions.at(i).bbox_.y+regions.at(i).bbox_.height/2)/inputFrame.rows;
                     switch (f)
                     {
                     case 0:
@@ -93,22 +101,22 @@ void TextDetector::WorkingThread()
                         data[count+2] = (t_float)regions.at(i).boundary_intensity_mean_/255;
                         break;
                     case 2:
-                        data[count+2] = (t_float)regions.at(i).bbox_.y/inputImage.rows;
+                        data[count+2] = (t_float)regions.at(i).bbox_.y/inputFrame.rows;
                         break;
                     case 3:
-                        data[count+2] = (t_float)(regions.at(i).bbox_.y+regions.at(i).bbox_.height)/inputImage.rows;
+                        data[count+2] = (t_float)(regions.at(i).bbox_.y+regions.at(i).bbox_.height)/inputFrame.rows;
                         break;
                     case 4:
-                        data[count+2] = (t_float)max(regions.at(i).bbox_.height, regions.at(i).bbox_.width)/max(inputImage.rows,inputImage.cols);
+                        data[count+2] = (t_float)max(regions.at(i).bbox_.height, regions.at(i).bbox_.width)/max(inputFrame.rows,inputFrame.cols);
                         break;
                     case 5:
                         data[count+2] = (t_float)regions.at(i).stroke_mean_/max_stroke;
                         break;
                     case 6:
-                        data[count+2] = (t_float)regions.at(i).area_/(inputImage.rows*inputImage.cols);
+                        data[count+2] = (t_float)regions.at(i).area_/(inputFrame.rows*inputFrame.cols);
                         break;
                     case 7:
-                        data[count+2] = (t_float)(regions.at(i).bbox_.height*regions.at(i).bbox_.width)/(inputImage.rows*inputImage.cols);
+                        data[count+2] = (t_float)(regions.at(i).bbox_.height*regions.at(i).bbox_.width)/(inputFrame.rows*inputFrame.cols);
                         break;
                     case 8:
                         data[count+2] = (t_float)regions.at(i).gradient_mean_/255;
@@ -134,7 +142,7 @@ void TextDetector::WorkingThread()
                         final_clusters.push_back(meaningful_clusters.at(k));
                 }
 
-                Mat tmp_segmentation = Mat::zeros(inputImage.size(),CV_8UC3);
+                Mat tmp_segmentation = Mat::zeros(inputFrame.size(),CV_8UC3);
                 Mat tmp_all_segmentations = Mat::zeros(240,320*11,CV_8UC3);
                 drawClusters(tmp_segmentation, &regions, &meaningful_clusters);
                 Mat tmp = Mat::zeros(240,320,CV_8UC3);
@@ -179,13 +187,15 @@ void TextDetector::WorkingThread()
             {
                 cvtColor(segmentation, grey, CV_BGR2GRAY);
                 threshold(grey, grey, 1, 255, CV_THRESH_BINARY);
-                if (countNonZero(grey) < inputImage.cols*inputImage.rows/2)
+                if (countNonZero(grey) < inputFrame.cols*inputFrame.rows/2)
                     threshold(grey,grey,1,255,THRESH_BINARY_INV);
 
                 api.SetImage((uchar*) grey.data, grey.cols, grey.rows, 1, grey.cols);
                 Boxa* boxes = api.GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL);
                 if(boxes == NULL) continue;
                 cout << "Found " << boxes->n << " boxes" << endl;
+
+                TextResult result;
                 for (int i = 0; i < boxes->n; i++)
                 {
                     Box* box = boxaGetBox(boxes, i, L_CLONE);
@@ -193,15 +203,22 @@ void TextDetector::WorkingThread()
                     char* ocrResult = api.GetUTF8Text();
                     int conf = api.MeanTextConf();
                     if (conf < 80) continue;
-                    printf(stdout, "Box[%d]: x=%d, y=%d, w=%d, h=%d, confidence: %d, text: %s",
+                    printf("Box[%d]: x=%d, y=%d, w=%d, h=%d, confidence: %d, text: %s",
                             i, box->x, box->y, box->w, box->h, conf, ocrResult);
-                    rectangle(outputImage, Rect(box->x, box->y, box->w, box->h), Scalar(0, 255, 0), 2);
-                    CvFont font = cvFontQt("Helvetica", 20.0, CV_RGB(0, 255, 0) );
-                    Point coord = Point(box->x-15, box->y );
-                    addText(outputImage, ocrResult, coord, font );
+                    Rect rect(box->x, box->y, box->w, box->h);
+                    TextInfo info;
+                    info.box = rect;
+                    info.text = string(ocrResult);
+                    result.push_back(info);
+//                    rectangle(outputImage, Rect(box->x, box->y, box->w, box->h), Scalar(0, 255, 0), 2);
+//                    CvFont font = cvFontQt("Helvetica", 20.0, CV_RGB(0, 255, 0) );
+//                    Point coord = Point(box->x-15, box->y );
+//                    addText(outputImage, ocrResult, coord, font );
                 }
-                cout << "Grey size " << grey.cols << " " << grey.rows << endl;
-                cvtColor(grey, binaryImage, CV_GRAY2RGB);
+
+                mtx.lock();
+                m_results = result;
+                mtx.unlock();
             }
             regions.clear();
         }

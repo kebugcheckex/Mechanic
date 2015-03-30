@@ -44,9 +44,10 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="http://192.168.0.9:8090/live.mpg temp.mpg" />
+				<Option parameters="0 temp.mpg" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -81,7 +82,10 @@
 		<Linker>
 			<Add option="`pkg-config --cflags opencv --libs opencv`" />
 		</Linker>
+		<Unit filename="FaceDetector.cpp" />
 		<Unit filename="FaceDetector.h" />
+		<Unit filename="TextDetector.cpp" />
+		<Unit filename="TextDetector.h" />
 		<Unit filename="VideoReader.cpp" />
 		<Unit filename="VideoReader.h" />
 		<Unit filename="fast_clustering.cpp" />
@@ -101,6 +105,7 @@
 		<Unit filename="region_classifier.h" />
 		<Unit filename="stdafx.h" />
 		<Unit filename="text_extract.h" />
+		<Unit filename="utils.cpp" />
 		<Unit filename="utils.h" />
 		<Extensions>
 			<code_completion />
