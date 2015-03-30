@@ -81,6 +81,9 @@
 		<Linker>
 			<Add option="`pkg-config --cflags opencv --libs opencv`" />
 		</Linker>
+		<Unit filename="FaceDetector.h" />
+		<Unit filename="VideoReader.cpp" />
+		<Unit filename="VideoReader.h" />
 		<Unit filename="fast_clustering.cpp" />
 		<Unit filename="group_classifier.cpp" />
 		<Unit filename="group_classifier.h" />
@@ -96,6 +99,7 @@
 		<Unit filename="region.h" />
 		<Unit filename="region_classifier.cpp" />
 		<Unit filename="region_classifier.h" />
+		<Unit filename="stdafx.h" />
 		<Unit filename="text_extract.h" />
 		<Unit filename="utils.h" />
 		<Extensions>
