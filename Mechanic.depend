@@ -159,7 +159,7 @@
 	<set>
 	<valarray>
 
-1427698506 source:/home/xinyu/projects/Mechanic/main.cpp
+1427733972 source:/home/xinyu/projects/Mechanic/main.cpp
 	"stdafx.h"
 	"VideoReader.h"
 	"FaceDetector.h"
@@ -1266,14 +1266,14 @@
 	"atomic.h"
 	"task_arena.h"
 
-1427694279 source:/home/xinyu/projects/Mechanic/FaceDetector.cpp
+1427733323 source:/home/xinyu/projects/Mechanic/FaceDetector.cpp
 	"FaceDetector.h"
 
 1427694277 /home/xinyu/projects/Mechanic/FaceDetector.h
 	"stdafx.h"
 	"VideoReader.h"
 
-1427699203 /home/xinyu/projects/Mechanic/stdafx.h
+1427733972 /home/xinyu/projects/Mechanic/stdafx.h
 	<cstdio>
 	<iostream>
 	<mutex>
@@ -1290,7 +1290,7 @@
 1427698464 /home/xinyu/projects/Mechanic/VideoReader.h
 	"stdafx.h"
 
-1427698464 source:/home/xinyu/projects/Mechanic/VideoReader.cpp
+1427732494 source:/home/xinyu/projects/Mechanic/VideoReader.cpp
 	"VideoReader.h"
 
 1427698774 /home/xinyu/projects/Mechanic/TextDetector.h
@@ -1305,4 +1305,7 @@
 
 1427698617 source:/home/xinyu/projects/Mechanic/TextDetector.cpp
 	"TextDetector.h"
+
+1427699234 source:/home/xinyu/projects/Mechanic/utils.cpp
+	"utils.h"
 

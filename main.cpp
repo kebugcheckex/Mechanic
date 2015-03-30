@@ -25,7 +25,7 @@ int main(int argc, char** argv)
         cout << "Input can be either a file on the disk or a URL to a video stream." << endl;
         return 1;
     }
-    string xmlPath("haarcascade_frontalface_default.xml");
+    string xmlPath("/home/xinyu/projects/Mechanic/haarcascade_frontalface_default.xml");
     string inputFileName(argv[1]);
     VideoReader videoReader(inputFileName);
     FaceDetector faceDetector(&videoReader, xmlPath);
@@ -52,6 +52,7 @@ int main(int argc, char** argv)
     CvFont font = cvFontQt("Helvetica", 20.0, CV_RGB(0, 255, 0) );
 
     videoReader.Run();
+    this_thread::sleep_for(chrono::milliseconds(100));
     textDetector.Run();
     faceDetector.Run();
 	namedWindow("Result");
@@ -72,13 +73,15 @@ int main(int argc, char** argv)
             3 - Text Detection Result
             4 - Text Binary Image
         */
-        videoReader.GetFrame(inputFrame);
+        if (!videoReader.GetFrame(inputFrame))
+            continue;
         inputFrame.copyTo(outputFrame(Rect(0, 0, width, height)));
 
         faceResult = inputFrame.clone();
         FaceResult fr;
         if (faceDetector.GetResult(fr))
         {
+            //cout << "Face results number "<< fr.size() << endl;
             for (FaceResult::iterator it = fr.begin(); it != fr.end(); it++)
             {
                 rectangle(faceResult, *it, Scalar(0, 255, 0), 2);
@@ -86,14 +89,13 @@ int main(int argc, char** argv)
         }
         faceResult.copyTo(outputFrame(Rect(width, 0, width, height)));
 
-
         textResult = inputFrame.clone();
         TextResult tr;
         if (textDetector.GetResults(tr))
         {
             for (TextResult::iterator it = tr.begin(); it != tr.end(); it++)
             {
-                rectangle(textResult, it->box, Scalar(0, 0, 255), 2);
+                rectangle(textResult, it->box, Scalar(0, 255, 0), 2);
                 Point coord = Point(it->box.x - 15, it->box.y);
                 addText(textResult, it->text, coord, font);
             }

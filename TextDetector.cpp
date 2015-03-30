@@ -7,6 +7,7 @@ TextDetector::TextDetector(VideoReader* pVideo)
 {
     m_pVideoReader = pVideo;
     api.Init(NULL, "eng");
+    running = false;
 }
 
 void TextDetector::Run()
@@ -37,6 +38,7 @@ bool TextDetector::GetResults(TextResult& pResults)
 
 void TextDetector::WorkingThread()
 {
+    cout << "Debug: entering TextDetector::WorkingThread" << endl;
     Mat inputFrame, grey, lab_img, gradient_magnitude, segmentation, all_segmentations;
     ::MSER mser8(false, 25, 0.000008, 0.03, 1, 0.7);
     RegionClassifier region_boost("boost_train/trained_boost_char.xml", 0);
@@ -192,8 +194,9 @@ void TextDetector::WorkingThread()
 
                 api.SetImage((uchar*) grey.data, grey.cols, grey.rows, 1, grey.cols);
                 Boxa* boxes = api.GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL);
-                if(boxes == NULL) continue;
-                cout << "Found " << boxes->n << " boxes" << endl;
+                if(boxes == NULL)
+                    continue;
+                //cout << "Found " << boxes->n << " boxes" << endl;
 
                 TextResult result;
                 for (int i = 0; i < boxes->n; i++)
@@ -210,12 +213,8 @@ void TextDetector::WorkingThread()
                     info.box = rect;
                     info.text = string(ocrResult);
                     result.push_back(info);
-//                    rectangle(outputImage, Rect(box->x, box->y, box->w, box->h), Scalar(0, 255, 0), 2);
-//                    CvFont font = cvFontQt("Helvetica", 20.0, CV_RGB(0, 255, 0) );
-//                    Point coord = Point(box->x-15, box->y );
-//                    addText(outputImage, ocrResult, coord, font );
                 }
-
+                //cvtColor(grey, grey, CV_GRAY2RGB);
                 mtx.lock();
                 m_results = result;
                 mtx.unlock();

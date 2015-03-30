@@ -27,6 +27,11 @@ VideoReader::VideoReader(string fileName)
 
 bool VideoReader::GetFrame(Mat& frame)
 {
+    if (currentFrame.rows == 0 || currentFrame.cols == 0)
+    {
+        cout << "currentFrame is empty!" << endl;
+        return false;
+    }
     mtx.lock();
     frame = currentFrame.clone();
     mtx.unlock();
@@ -38,7 +43,8 @@ void VideoReader::ReadThread()
     Mat frame;
     while (running)
     {
-        if (vc.read(frame)) break;
+        if (!vc.read(frame)) break;
+        resize(frame, frame, Size(320, 240));
         mtx.lock();
         frame.copyTo(currentFrame);
         mtx.unlock();
@@ -47,7 +53,7 @@ void VideoReader::ReadThread()
 
 Size VideoReader::GetSize()
 {
-    return m_size;
+    return Size(320, 240);
 }
 void VideoReader::Run()
 {
