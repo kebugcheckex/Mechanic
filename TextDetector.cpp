@@ -191,7 +191,7 @@ void TextDetector::WorkingThread()
                 threshold(grey, grey, 1, 255, CV_THRESH_BINARY);
                 if (countNonZero(grey) < inputFrame.cols*inputFrame.rows/2)
                     threshold(grey,grey,1,255,THRESH_BINARY_INV);
-
+                // De-skewing here
                 api.SetImage((uchar*) grey.data, grey.cols, grey.rows, 1, grey.cols);
                 Boxa* boxes = api.GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL);
                 if(boxes == NULL)

@@ -84,6 +84,8 @@
 		</Linker>
 		<Unit filename="FaceDetector.cpp" />
 		<Unit filename="FaceDetector.h" />
+		<Unit filename="QRScanner.cpp" />
+		<Unit filename="QRScanner.h" />
 		<Unit filename="TextDetector.cpp" />
 		<Unit filename="TextDetector.h" />
 		<Unit filename="VideoReader.cpp" />

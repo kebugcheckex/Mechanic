@@ -1273,7 +1273,7 @@
 	"stdafx.h"
 	"VideoReader.h"
 
-1427733972 /home/xinyu/projects/Mechanic/stdafx.h
+1428342673 /home/xinyu/projects/Mechanic/stdafx.h
 	<cstdio>
 	<iostream>
 	<mutex>
@@ -1303,7 +1303,7 @@
 	"group_classifier.h"
 	"utils.h"
 
-1427698617 source:/home/xinyu/projects/Mechanic/TextDetector.cpp
+1427734075 source:/home/xinyu/projects/Mechanic/TextDetector.cpp
 	"TextDetector.h"
 
 1427699234 source:/home/xinyu/projects/Mechanic/utils.cpp

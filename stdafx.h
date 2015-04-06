@@ -39,4 +39,6 @@ typedef struct tagTextInfo
 } TextInfo;
 
 typedef std::vector<TextInfo> TextResult;
+
+typedef cv::Mat QRResult;
 #endif // STDAFX_H_INCLUDED
