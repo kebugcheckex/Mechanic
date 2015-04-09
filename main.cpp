@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	int height = videoReader.GetSize().height;
 	string outputFileName(argv[2]);
 	// TODO - FOURCC should not be hard coded
-	VideoWriter vw(argv[2], CV_FOURCC('M','P','E','G'), 25, Size(width*2, height*2));
+	VideoWriter vw(argv[2], CV_FOURCC('M','P','E','G'), 25, Size(width, height));
 	if (!vw.isOpened())
 	{
         cerr << "Error: Failed to open the output file!" << endl;
@@ -42,72 +42,112 @@ int main(int argc, char** argv)
 	}
 
 
-	Mat outputFrame(height*2, width*2, CV_8UC3);
+	Mat outputFrame(height, width, CV_8UC3);
 	Mat inputFrame(height, width, CV_8UC3);
-    Mat faceResult(height, width, CV_8UC3);
-    Mat textResult(height, width, CV_8UC3);
-    Mat textBinary(height, width, CV_8UC3);
-    textBinary = Scalar(0, 0, 0);
-
     CvFont font = cvFontQt("Helvetica", 20.0, CV_RGB(0, 255, 0) );
-
+    vector<int> high_count;
+    vector<Mat> theVideo;
     videoReader.Run();
     this_thread::sleep_for(chrono::milliseconds(100));
     textDetector.Run();
     faceDetector.Run();
 	namedWindow("Result");
-	do {
-        /*
-            The output image consists of four parts
-            +-------+-------+
-            |       |       |
-            |   1   |   2   |
-            |       |       |
-            +-------+-------+
-            |       |       |
-            |   3   |   4   |
-            |       |       |
-            +-------+-------+
-            1 - Original Image
-            2 - Face Detection Result
-            3 - Text Detection Result
-            4 - Text Binary Image
-        */
+	bool user_quit = false;
+	bool face_on = false;
+	bool text_on = false;
+	int content;
+	while (!user_quit) {
         if (!videoReader.GetFrame(inputFrame))
             continue;
-        inputFrame.copyTo(outputFrame(Rect(0, 0, width, height)));
-
-        faceResult = inputFrame.clone();
-        FaceResult fr;
-        if (faceDetector.GetResult(fr))
+        content = 0;
+        inputFrame.copyTo(outputFrame);
+        if (face_on)
         {
-            //cout << "Face results number "<< fr.size() << endl;
-            for (FaceResult::iterator it = fr.begin(); it != fr.end(); it++)
+            FaceResult fr;
+            if (faceDetector.GetResult(fr))
             {
-                rectangle(faceResult, *it, Scalar(0, 255, 0), 2);
+                if (fr.size() > 0)
+                {
+                    content++;
+                    for (FaceResult::iterator it = fr.begin(); it != fr.end(); it++)
+                    {
+                        rectangle(outputFrame, *it, Scalar(0, 255, 0), 2);
+                    }
+                }
             }
         }
-        faceResult.copyTo(outputFrame(Rect(width, 0, width, height)));
 
-        textResult = inputFrame.clone();
-        TextResult tr;
-        if (textDetector.GetResults(tr))
+        if (text_on)
         {
-            for (TextResult::iterator it = tr.begin(); it != tr.end(); it++)
+            TextResult tr;
+            if (textDetector.GetResults(tr))
             {
-                rectangle(textResult, it->box, Scalar(0, 255, 0), 2);
-                Point coord = Point(it->box.x - 15, it->box.y);
-                addText(textResult, it->text, coord, font);
+                if (tr.size() > 0)
+                {
+                    content++;
+                    for (TextResult::iterator it = tr.begin(); it != tr.end(); it++)
+                    {
+                        rectangle(outputFrame, it->box, Scalar(0, 255, 255), 2);
+                        Point coord = Point(it->box.x - 15, it->box.y);
+                        addText(outputFrame, it->text, coord, font);
+                    }
+                }
+
             }
         }
-        textResult.copyTo(outputFrame(Rect(0, height, width, height)));
-        textBinary.copyTo(outputFrame(Rect(width, height, width, height)));
         imshow("Result", outputFrame);
         vw << outputFrame;
-	} while (waitKey(40) < 0);
+        high_count.push_back(content);
+        Mat output = outputFrame.clone();
+        theVideo.push_back(output);
+        int key = waitKey(20);
+        switch (key) {
+        case 'q':
+            user_quit = true;
+            break;
+        case 'f':
+            face_on = !face_on;
+            break;
+        case 't':
+            text_on = !text_on;
+            break;
+        }
+	}
 	faceDetector.Stop();
 	textDetector.Stop();
 	videoReader.Stop();
+	cout << "Processing highlight..." << endl;
+	VideoCapture vc(argv[2]);
+	if (!vc.isOpened())
+	{
+        cout << "Failed to open the recorded video!" << endl;
+        return 8;
+	}
+	VideoWriter highvw("highlight.mpg", CV_FOURCC('M','P','E','G'), 25, Size(width, height));
+	if (!highvw.isOpened())
+	{
+        cerr << "Error: Failed to open the output file!" << endl;
+        return 3;
+	}
+	if (theVideo.size() < 150)
+	{
+        cout << "Video too short!" << endl;
+        return 11;
+	}
+	for (int i = 30; i < high_count.size() - 30; i++)
+	{
+        if (high_count[i] > 0)
+        {
+            //cout << "Got key frame: " << i << endl;
+            for (int j = i - 30; j < i + 30; j++)
+            {
+                //cout << "Writing frame :" << j << endl;
+                highvw << theVideo[j];
+            }
+            i += 60;
+        }
+	}
+	cout << "Total frames: " << theVideo.size() << endl;
     cout << "Done!" << endl;
 	return 0;
 }
