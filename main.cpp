@@ -52,6 +52,7 @@ int main(int argc, char** argv)
     textDetector.Run();
     faceDetector.Run();
 	namedWindow("Result");
+	//namedWindow("Text");
 	bool user_quit = false;
 	bool face_on = false;
 	bool text_on = false;

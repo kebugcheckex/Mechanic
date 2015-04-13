@@ -159,7 +159,7 @@
 	<set>
 	<valarray>
 
-1428555947 source:/home/xinyu/projects/Mechanic/main.cpp
+1428868538 source:/home/xinyu/projects/Mechanic/main.cpp
 	"stdafx.h"
 	"VideoReader.h"
 	"FaceDetector.h"
@@ -1303,8 +1303,9 @@
 	"group_classifier.h"
 	"utils.h"
 
-1428354886 source:/home/xinyu/projects/Mechanic/TextDetector.cpp
+1428868606 source:/home/xinyu/projects/Mechanic/TextDetector.cpp
 	"TextDetector.h"
+	"ImageUtils.h"
 
 1427699234 source:/home/xinyu/projects/Mechanic/utils.cpp
 	"utils.h"
@@ -1316,9 +1317,9 @@
 	"stdafx.h"
 	"VideoReader.h"
 
-1428441686 source:/home/xinyu/projects/Mechanic/ImageUtils.cpp
+1428868494 source:/home/xinyu/projects/Mechanic/ImageUtils.cpp
 	"ImageUtils.h"
 
-1428441686 /home/xinyu/projects/Mechanic/ImageUtils.h
+1428866802 /home/xinyu/projects/Mechanic/ImageUtils.h
 	"stdafx.h"
 

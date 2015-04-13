@@ -6,7 +6,7 @@
 class ImageUtils
 {
 public:
-    static cv::Mat Deskew(const cv::Mat& inputImage);
+    static cv::Mat Deskew(cv::Mat inputImage);
 private:
     static float compute_skew_angle(cv::Mat image);
 

@@ -1,5 +1,5 @@
 #include "TextDetector.h"
-
+#include "ImageUtils.h"
 using namespace std;
 using namespace cv;
 
@@ -39,12 +39,12 @@ bool TextDetector::GetResults(TextResult& pResults)
 void TextDetector::WorkingThread()
 {
     cout << "Debug: entering TextDetector::WorkingThread" << endl;
+
     Mat inputFrame, grey, lab_img, gradient_magnitude, segmentation, all_segmentations;
     ::MSER mser8(false, 25, 0.000008, 0.03, 1, 0.7);
     RegionClassifier region_boost("boost_train/trained_boost_char.xml", 0);
     GroupClassifier  group_boost("boost_train/trained_boost_groups.xml", &region_boost);
     vector<Region> regions;
-
     while (running)
     {
         m_pVideoReader->GetFrame(inputFrame);
@@ -191,12 +191,11 @@ void TextDetector::WorkingThread()
                 threshold(grey, grey, 1, 255, CV_THRESH_BINARY);
                 if (countNonZero(grey) < inputFrame.cols*inputFrame.rows/2)
                     threshold(grey,grey,1,255,THRESH_BINARY_INV);
-                // De-skewing here
-                api.SetImage((uchar*) grey.data, grey.cols, grey.rows, 1, grey.cols);
+                Mat grey_d = grey;//ImageUtils::Deskew(grey);
+                api.SetImage((uchar*) grey_d.data, grey_d.cols, grey_d.rows, 1, grey_d.cols);
                 Boxa* boxes = api.GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL);
                 if(boxes == NULL)
                     continue;
-                //cout << "Found " << boxes->n << " boxes" << endl;
 
                 TextResult result;
                 for (int i = 0; i < boxes->n; i++)
