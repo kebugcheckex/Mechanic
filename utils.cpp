@@ -36,18 +36,16 @@ void drawClusters(Mat& img, vector<Region> *regions, vector<vector<int> > *meani
 {
 	//img = img*0;
 	uchar* rsptr = (uchar*)img.data;
-	for (int i=0; i<meaningful_clusters->size(); i++)
+	for (int i = 0; i < meaningful_clusters->size(); i++)
 	{
-
-	    for (int c=0; c<meaningful_clusters->at(i).size(); c++)
+	    for (int c = 0; c < meaningful_clusters->at(i).size(); c++)
 	    {
-
-		for (int p=0; p<regions->at(meaningful_clusters->at(i).at(c)).pixels_.size(); p++)
-		{
-			rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3] = bcolors[i%9][2];
-			rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3+1] = bcolors[i%9][1];
-			rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3+2] = bcolors[i%9][0];
-		}
+            for (int p = 0; p < regions->at(meaningful_clusters->at(i).at(c)).pixels_.size(); p++)
+            {
+                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3] = bcolors[i%9][2];
+                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3+1] = bcolors[i%9][1];
+                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3+2] = bcolors[i%9][0];
+            }
 	    }
 	}
 }

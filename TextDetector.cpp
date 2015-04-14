@@ -183,6 +183,7 @@ void TextDetector::WorkingThread()
                     final_clusters.push_back(meaningful_clusters.at(i));
                 }
             }
+
             drawClusters(segmentation, &regions, &final_clusters);
 
             if (step == 2)
@@ -191,7 +192,9 @@ void TextDetector::WorkingThread()
                 threshold(grey, grey, 1, 255, CV_THRESH_BINARY);
                 if (countNonZero(grey) < inputFrame.cols*inputFrame.rows/2)
                     threshold(grey,grey,1,255,THRESH_BINARY_INV);
-                Mat grey_d = grey;//ImageUtils::Deskew(grey);
+
+                Mat grey_d = grey;//ftqImageUtils::Deskew(grey);
+
                 api.SetImage((uchar*) grey_d.data, grey_d.cols, grey_d.rows, 1, grey_d.cols);
                 Boxa* boxes = api.GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL);
                 if(boxes == NULL)

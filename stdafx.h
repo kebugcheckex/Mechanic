@@ -18,6 +18,7 @@
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <sstream>
 #include <string>
 #include <vector>
 // OpenCV headers

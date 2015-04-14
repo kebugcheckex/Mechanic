@@ -17,11 +17,21 @@
 using namespace std;
 using namespace cv;
 
+string GetDateTime()
+{
+    time_t t = time(0);
+    struct tm *now = localtime(&t);
+    stringstream ss;
+    ss << now->tm_year + 1900 << now->tm_mon << now->tm_mday;
+    ss << now->tm_hour << now->tm_min << now->tm_sec;
+    return ss.str();
+}
+
 int main(int argc, char** argv)
 {
-    if (argc < 3)   // We need two parameters, one for input file, and the other one for output file.
+    if (argc < 2)   // We need two parameters, one for input file, and the other one for output file.
     {
-        cout << "Usage: " << argv[0] << " input-file output-file" << endl;
+        cout << "Usage: " << argv[0] << " input-file" << endl;
         cout << "Input can be either a file on the disk or a URL to a video stream." << endl;
         return 1;
     }
@@ -32,9 +42,10 @@ int main(int argc, char** argv)
     TextDetector textDetector(&videoReader);
     int width = videoReader.GetSize().width;
 	int height = videoReader.GetSize().height;
-	string outputFileName(argv[2]);
+	string outputFileName(GetDateTime());
 	// TODO - FOURCC should not be hard coded
-	VideoWriter vw(argv[2], CV_FOURCC('M','P','E','G'), 25, Size(width, height));
+
+	VideoWriter vw(outputFileName + ".mpg", CV_FOURCC('M','P','E','G'), 25, Size(width, height));
 	if (!vw.isOpened())
 	{
         cerr << "Error: Failed to open the output file!" << endl;
@@ -45,6 +56,7 @@ int main(int argc, char** argv)
 	Mat outputFrame(height, width, CV_8UC3);
 	Mat inputFrame(height, width, CV_8UC3);
     CvFont font = cvFontQt("Helvetica", 20.0, CV_RGB(0, 255, 0) );
+    CvFont prompt_font = cvFontQt("Arial", 12.0, CV_RGB(255, 0, 0));
     vector<int> high_count;
     vector<Mat> theVideo;
     videoReader.Run();
@@ -52,11 +64,13 @@ int main(int argc, char** argv)
     textDetector.Run();
     faceDetector.Run();
 	namedWindow("Result");
-	//namedWindow("Text");
+
 	bool user_quit = false;
 	bool face_on = false;
 	bool text_on = false;
 	int content;
+	int prompt_count = 0;
+	string prompt_text = "";
 	while (!user_quit) {
         if (!videoReader.GetFrame(inputFrame))
             continue;
@@ -96,8 +110,24 @@ int main(int argc, char** argv)
 
             }
         }
-        imshow("Result", outputFrame);
+
         vw << outputFrame;
+
+        if (prompt_text.size() > 0)
+        {
+            prompt_count++;
+            if (prompt_count < 40)
+            {
+                addText(outputFrame, prompt_text, Point(5, 20), prompt_font);
+            }
+            else
+            {
+                prompt_text = "";
+                prompt_count = 0;
+            }
+        }
+        imshow("Result", outputFrame);
+
         high_count.push_back(content);
         Mat output = outputFrame.clone();
         theVideo.push_back(output);
@@ -107,16 +137,35 @@ int main(int argc, char** argv)
             user_quit = true;
             break;
         case 'f':
-            face_on = !face_on;
+            if (face_on)
+            {
+                face_on = false;
+                prompt_text = "Face detection is turned off";
+            }
+            else
+            {
+                face_on = true;
+                prompt_text = "Face detection is turned on";
+            }
             break;
         case 't':
-            text_on = !text_on;
+            if (text_on)
+            {
+                text_on = false;
+                prompt_text = "Text detection is turned off";
+            }
+            else
+            {
+                text_on = true;
+                prompt_text = "Text detection is turned on";
+            }
             break;
         }
 	}
 	faceDetector.Stop();
 	textDetector.Stop();
 	videoReader.Stop();
+
 	cout << "Processing highlight..." << endl;
 	VideoCapture vc(argv[2]);
 	if (!vc.isOpened())
@@ -124,7 +173,7 @@ int main(int argc, char** argv)
         cout << "Failed to open the recorded video!" << endl;
         return 8;
 	}
-	VideoWriter highvw("highlight.mpg", CV_FOURCC('M','P','E','G'), 25, Size(width, height));
+	VideoWriter highvw(outputFileName + "_h.mpg", CV_FOURCC('M','P','E','G'), 25, Size(width, height));
 	if (!highvw.isOpened())
 	{
         cerr << "Error: Failed to open the output file!" << endl;

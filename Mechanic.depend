@@ -159,7 +159,7 @@
 	<set>
 	<valarray>
 
-1428868538 source:/home/xinyu/projects/Mechanic/main.cpp
+1428968713 source:/home/xinyu/projects/Mechanic/main.cpp
 	"stdafx.h"
 	"VideoReader.h"
 	"FaceDetector.h"
@@ -1273,11 +1273,12 @@
 	"stdafx.h"
 	"VideoReader.h"
 
-1428342673 /home/xinyu/projects/Mechanic/stdafx.h
+1428968713 /home/xinyu/projects/Mechanic/stdafx.h
 	<cstdio>
 	<iostream>
 	<mutex>
 	<thread>
+	<sstream>
 	<string>
 	<vector>
 	<opencv2/core/core.hpp>
@@ -1307,7 +1308,7 @@
 	"TextDetector.h"
 	"ImageUtils.h"
 
-1427699234 source:/home/xinyu/projects/Mechanic/utils.cpp
+1428968713 source:/home/xinyu/projects/Mechanic/utils.cpp
 	"utils.h"
 
 1428346583 source:/home/xinyu/projects/Mechanic/QRScanner.cpp
