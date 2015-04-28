@@ -11,7 +11,7 @@ OBJ = fast_clustering.o group_classifier.o max_meaningful_clustering.o min_bound
 %.o: %.cpp $(DEPS)
 	$(CXX) -c -o $@ $< $(CFLAGS)
 
-all: Mechenic
+all: Mechanic
 
 Mechanic: $(OBJ)
 	$(CXX) -o $@ $^ $(CFLAGS) $(LIBS)
