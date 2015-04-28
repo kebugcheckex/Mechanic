@@ -4,7 +4,7 @@
     This file is part of PWICE project.
 
     Contributors:
-    - Wayne Huang
+    - Wayne Hung
     - Xu Qiu
     - Brian Lan
     - Xinyu Chen
@@ -48,13 +48,13 @@ string GetDateTime()
 
 int main(int argc, char** argv)
 {
-    if (argc < 2)   // We need two parameters, one for input file, and the other one for output file.
+    if (argc < 2)   // We need one parameters for input file
     {
         cout << "Usage: " << argv[0] << " input-file" << endl;
         cout << "Input can be either a file on the disk or a URL to a video stream." << endl;
         return 1;
     }
-    string xmlPath("/home/xinyu/projects/Mechanic/haarcascade_frontalface_default.xml");
+    string xmlPath("./haarcascade_frontalface_default.xml");
     string inputFileName(argv[1]);
     VideoReader videoReader(inputFileName);
     FaceDetector faceDetector(&videoReader, xmlPath);
@@ -150,7 +150,7 @@ int main(int argc, char** argv)
         Mat result(width*2, height*2, CV_8UC3);
         resize(outputFrame, result, Size(width*2, height*2));
         imshow("Result", result);
-        vw << result;
+        vw << outputFrame;
         high_count.push_back(content);
         Mat output = outputFrame.clone();
         theVideo.push_back(output);

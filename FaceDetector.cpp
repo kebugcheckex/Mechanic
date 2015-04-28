@@ -7,7 +7,7 @@ FaceDetector::FaceDetector(VideoReader* pVideo, string xmlPath)
 {
     running = false;
     m_pVideoReader = pVideo;
-    m_classifier = CascadeClassifier("/home/xinyu/projects/Mechanic/haarcascade_frontalface_default.xml");
+    m_classifier = CascadeClassifier("./haarcascade_frontalface_default.xml");
 }
 
 void FaceDetector::WorkingThread()

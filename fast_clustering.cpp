@@ -42,6 +42,7 @@
 #error The constant DBL_MANT_DIG could not be defined.
 #endif
 
+#include <cstdlib>
 //#include <cmath>
 #include <algorithm>
 
