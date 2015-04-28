@@ -1,6 +1,6 @@
 CXX = g++
 
-CFLAGS = -I. -Wno-c++11-narrowing -Wno-unused-parameter -Wunused-function -std=c++11 `pkg-config --cflags opencv tesseract`
+CFLAGS = -I. -Wno-c++11-narrowing -Wno-unused-parameter -Wno-unused-function -std=c++11 `pkg-config --cflags opencv tesseract`
 
 LIBS = `pkg-config --libs-only-L --libs-only-l opencv tesseract`
 

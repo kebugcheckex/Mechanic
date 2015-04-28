@@ -87,8 +87,8 @@ int main(int argc, char** argv)
 	namedWindow("Result");
 
 	bool user_quit = false;
-	bool face_on = false;
-	bool text_on = false;
+	bool face_on = true;
+	bool text_on = true;
 	int content;
 	int prompt_count = 0;
 	string prompt_text = "";
