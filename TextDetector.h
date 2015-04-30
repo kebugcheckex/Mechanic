@@ -19,6 +19,7 @@ class TextDetector
 public:
     TextDetector(VideoReader* pVideo);
     bool GetResults(TextResult& pResults);
+    TextResult ProcessOneFrame(const Mat& inputFrame);
     void Run();
     void Stop();
 protected:

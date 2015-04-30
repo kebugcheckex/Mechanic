@@ -54,6 +54,7 @@ int main(int argc, char** argv)
         cout << "Input can be either a file on the disk or a URL to a video stream." << endl;
         return 1;
     }
+    
     string xmlPath("./haarcascade_frontalface_default.xml");
     string inputFileName(argv[1]);
     VideoReader videoReader(inputFileName);

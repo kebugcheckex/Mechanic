@@ -19,15 +19,23 @@ void FaceDetector::WorkingThread()
     {
         m_pVideoReader->GetFrame(inputFrame);
         //cout << "Debug: inputFrame size = " << inputFrame.cols << "x" << inputFrame.rows << endl;
-        Mat grayImage;
-        cvtColor(inputFrame, grayImage, COLOR_BGR2GRAY);
-        m_classifier.detectMultiScale(grayImage, objects, 1.3, 5);
+        objects = ProcessOneFrame(inputFrame);
         //cout << "Objects detected:" << objects.size() << "\t";
         mtx.lock();
         m_results = objects;
         mtx.unlock();
         objects.clear();
     }
+}
+
+FaceResult FaceDetector::ProcessOneFrame(const Mat& frame)
+{
+    FaceResult objects;
+    Mat grayImage;
+    cvtColor(frame, grayImage, COLOR_BGR2GRAY);
+    m_classifier.detectMultiScale(grayImage, objects, 1.3, 5);
+    //cout << "Objects detected:" << objects.size() << "\t";
+    return objects;
 }
 
 void FaceDetector::Run()

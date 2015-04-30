@@ -11,6 +11,7 @@ public:
     bool GetResult(FaceResult& result);
     void Run();
     void Stop();
+    FaceResult ProcessOneFrame(const cv::Mat& frame);
 protected:
     void WorkingThread();
 private:
