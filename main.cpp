@@ -46,6 +46,22 @@ string GetDateTime()
     return ss.str();
 }
 
+void DisplayText(Mat& frame, vector<string> lines)
+{
+    int width = frame.cols;
+    int height = frame.rows;
+    int x = width * 3 / 4 - height / 20;
+    int y = height / 20;
+    Mat wind = Mat::zeros(height/4, width/4, CV_8UC3);
+    CvFont font = cvFontQt("Arial", 10, CV_RGB(255, 255, 255));
+    for (int i = 0; i < lines.size(); i++)
+    {
+        Point coord(0, 10 * (i + 1));
+        addText(wind, lines[i], coord, font);
+    }
+    wind.copyTo(frame(Rect(x, y, wind.cols, wind.rows)));
+}
+
 int main(int argc, char** argv)
 {
     if (argc < 2)   // We need one parameters for input file
@@ -54,7 +70,7 @@ int main(int argc, char** argv)
         cout << "Input can be either a file on the disk or a URL to a video stream." << endl;
         return 1;
     }
-    
+
     string xmlPath("./haarcascade_frontalface_default.xml");
     string inputFileName(argv[1]);
     VideoReader videoReader(inputFileName);
@@ -73,11 +89,9 @@ int main(int argc, char** argv)
         return 3;
 	}
 
-
 	Mat outputFrame(height, width, CV_8UC3);
 	Mat inputFrame(height, width, CV_8UC3);
-	//Mat blank = Mat::zeros(height, width, CV_8UC3);
-    CvFont font = cvFontQt("Helvetica", 12.0, CV_RGB(0, 255, 0) );
+    //CvFont font = cvFontQt("Helvetica", 12.0, CV_RGB(0, 255, 0) );
     CvFont prompt_font = cvFontQt("Arial", 12.0, CV_RGB(255, 0, 0));
     vector<int> high_count;
     vector<Mat> theVideo;
@@ -93,6 +107,8 @@ int main(int argc, char** argv)
 	int content;
 	int prompt_count = 0;
 	string prompt_text = "";
+	int display_delay = 0;
+	vector<string> lines;
 	while (!user_quit)
 	{
         if (!videoReader.GetFrame(inputFrame))
@@ -122,18 +138,22 @@ int main(int argc, char** argv)
             {
                 if (tr.size() > 0)
                 {
+                    if (display_delay == 0) lines.clear();
                     content++;
                     int line = 0;
                     for (TextResult::iterator it = tr.begin(); it != tr.end(); it++)
                     {
                         rectangle(outputFrame, it->box, Scalar(0, 255, 255), 2);
-                        Point coord = Point(width - 100, 20 + line * 14);
-                        addText(outputFrame, it->text, coord, font);
-                        line++;
+                        if (display_delay == 0)
+                        {
+                            lines.push_back(it->text);
+                            display_delay = 15;
+                        }
                     }
                 }
-
             }
+            DisplayText(outputFrame, lines);
+            if (display_delay > 0) display_delay--;
         }
         if (prompt_text.size() > 0)
         {
@@ -212,10 +232,8 @@ int main(int argc, char** argv)
 	{
         if (high_count[i] > 0)
         {
-            //cout << "Got key frame: " << i << endl;
             for (int j = i - 30; j < i + 30; j++)
             {
-                //cout << "Writing frame :" << j << endl;
                 highvw << theVideo[j];
             }
             i += 60;

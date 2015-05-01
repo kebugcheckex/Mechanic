@@ -81,7 +81,7 @@ void TextDetector::WorkingThread()
                 else
                     max_stroke = max(max_stroke, regions[i].stroke_mean_);
             }
-            
+
             MaxMeaningfulClustering mm_clustering(METHOD_METR_SINGLE, METRIC_SEUCLIDEAN);
 
             vector< vector<int> > meaningful_clusters;
@@ -207,11 +207,12 @@ void TextDetector::WorkingThread()
                     threshold(grey,grey,1,255,THRESH_BINARY_INV);
 
                 Mat grey_d = grey;
-                
+
                 api.SetImage((uchar*) grey_d.data, grey_d.cols, grey_d.rows, 1, grey_d.cols);
                 Boxa* boxes = api.GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL);
-                
-                if(boxes == NULL){
+
+                if(boxes == NULL)
+                {
                     regions.clear();
                     break;
                 }
@@ -251,26 +252,26 @@ TextResult TextDetector::ProcessOneFrame(const Mat& inputFrame)
     Mat grey, lab_img;
     Mat gradient_magnitude, segmentation, all_segmentations;
     ::MSER mser8(false, 25, 0.000008, 0.03, 1, 0.7); // Initialize the MSER object
-    
+
     RegionClassifier region_boost("boost_train/trained_boost_char.xml", 0);
     GroupClassifier  group_boost("boost_train/trained_boost_groups.xml", &region_boost);
     vector<Region> regions;
-    
+
     cvtColor(inputFrame, grey, CV_BGR2GRAY);    // Convert to grayscale
     cvtColor(inputFrame, lab_img, CV_BGR2Lab);  // Convert to lab color space
-    
+
     gradient_magnitude = Mat_<double>(inputFrame.size());
     get_gradient_magnitude(grey, gradient_magnitude);
-    
+
     segmentation = Mat::zeros(inputFrame.size(), CV_8UC3);
     all_segmentations = Mat::zeros(inputFrame.rows, inputFrame.cols * NUM_FEATURES,CV_8UC3);     // TODO hard-coded parameters
-    
+
     for (int step = 1; step < 3; step++)
     {
         if (step == 2) grey = 255 - grey;
-        
+
         mser8((uchar*)grey.data, grey.cols, grey.rows, regions);
-        
+
         for (int i = 0; i < regions.size(); i++) regions[i].er_fill(grey);
         double max_stroke = 0;
         for (int i = regions.size() - 1; i >= 0; i--)
@@ -284,14 +285,14 @@ TextResult TextDetector::ProcessOneFrame(const Mat& inputFrame)
             else
                 max_stroke = max(max_stroke, regions[i].stroke_mean_);
         }
-        
+
         MaxMeaningfulClustering mm_clustering(METHOD_METR_SINGLE, METRIC_SEUCLIDEAN);
-        
+
         vector< vector<int> > meaningful_clusters;
         vector< vector<int> > final_clusters;
-        
+
         Mat co_occurrence_matrix = Mat::zeros((int)regions.size(), (int)regions.size(), CV_64F);
-        
+
         for (int f = 0; f < NUM_FEATURES; f++)
         {
             unsigned int N = regions.size();
@@ -347,14 +348,14 @@ TextResult TextDetector::ProcessOneFrame(const Mat& inputFrame)
                 count = count + dim;
             }
             mm_clustering(data, N, dim, METHOD_METR_SINGLE, METRIC_SEUCLIDEAN, &meaningful_clusters); // TODO try accumulating more evidence by using different methods and metrics
-            
+
             for (int k = 0; k < meaningful_clusters.size(); k++)
             {
                 accumulate_evidence(&meaningful_clusters.at(k), 1, &co_occurrence_matrix);
                 if ((group_boost(&meaningful_clusters.at(k), &regions) >= DECISION_THRESHOLD_SF))
                     final_clusters.push_back(meaningful_clusters.at(k));
             }
-            
+
             Mat tmp_segmentation = Mat::zeros(inputFrame.size(),CV_8UC3);
             Mat tmp_all_segmentations = Mat::zeros(inputFrame.rows,inputFrame.cols * NUM_FEATURES, CV_8UC3); // TODO hard-coded parameters
             drawClusters(tmp_segmentation, &regions, &meaningful_clusters);
@@ -363,17 +364,17 @@ TextResult TextDetector::ProcessOneFrame(const Mat& inputFrame)
             //tmp.copyTo(tmp_all_segmentations(Rect(inputFrame.cols*f,0,inputFrame.cols,inputFrame.rows)));
             tmp.copyTo(tmp_all_segmentations.colRange(inputFrame.cols * f, inputFrame.cols * (f+1)));
             all_segmentations = all_segmentations + tmp_all_segmentations;
-            
+
             delete[] data;
             meaningful_clusters.clear();
         }
-        
+
         double minVal;
         double maxVal;
         minMaxLoc(co_occurrence_matrix, &minVal, &maxVal);
         maxVal = NUM_FEATURES - 1; //TODO this is true only if you are using "grow == 1" in accumulate_evidence function
         minVal = 0;
-        
+
         co_occurrence_matrix = maxVal - co_occurrence_matrix;
         co_occurrence_matrix = co_occurrence_matrix / maxVal;
         //we want a sparse matrix
@@ -399,26 +400,26 @@ TextResult TextDetector::ProcessOneFrame(const Mat& inputFrame)
                 final_clusters.push_back(meaningful_clusters.at(i));
             }
         }
-        
+
         drawClusters(segmentation, &regions, &final_clusters);
-        
+
         if (step == 2)
         {
             cvtColor(segmentation, grey, CV_BGR2GRAY);
             threshold(grey, grey, 1, 255, CV_THRESH_BINARY);
             if (countNonZero(grey) < inputFrame.cols*inputFrame.rows/2)
                 threshold(grey,grey,1,255,THRESH_BINARY_INV);
-            
+
             Mat grey_d = grey;
-            
+
             api.SetImage((uchar*) grey_d.data, grey_d.cols, grey_d.rows, 1, grey_d.cols);
             Boxa* boxes = api.GetComponentImages(tesseract::RIL_TEXTLINE, true, NULL, NULL);
-            
+
             if(boxes == NULL){
                 regions.clear();
                 break;
             }
-            
+
 
             for (int i = 0; i < boxes->n; i++)
             {
@@ -442,5 +443,5 @@ TextResult TextDetector::ProcessOneFrame(const Mat& inputFrame)
         regions.clear();
     }
     return result;
-    
+
 }

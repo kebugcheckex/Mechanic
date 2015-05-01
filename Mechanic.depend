@@ -159,24 +159,25 @@
 	<set>
 	<valarray>
 
-1430171625 source:/home/xinyu/projects/Mechanic/main.cpp
+1430518244 source:/home/xinyu/projects/Mechanic/main.cpp
 	"stdafx.h"
 	"VideoReader.h"
 	"FaceDetector.h"
 	"TextDetector.h"
 
-1426049439 source:/home/xinyu/projects/Mechanic/fast_clustering.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/fast_clustering.cpp
 	<limits>
 	<float.h>
+	<cstdlib>
 	<algorithm>
 	<limits.h>
 	<stdint.h>
 	<cmath>
 
-1426049439 source:/home/xinyu/projects/Mechanic/group_classifier.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/group_classifier.cpp
 	"group_classifier.h"
 
-1426049439 /home/xinyu/projects/Mechanic/group_classifier.h
+1430496750 /home/xinyu/projects/Mechanic/group_classifier.h
 	<opencv/cv.h>
 	<opencv/ml.h>
 	<stdio.h>
@@ -475,7 +476,7 @@
 	"opencv2/core/core.hpp"
 	"opencv2/ml/ml.hpp"
 
-1426049439 /home/xinyu/projects/Mechanic/region.h
+1430496750 /home/xinyu/projects/Mechanic/region.h
 	<opencv/cv.h>
 	<opencv/highgui.h>
 	<vector>
@@ -487,7 +488,7 @@
 	"opencv2/highgui/highgui_c.h"
 	"opencv2/highgui/highgui.hpp"
 
-1426049439 /home/xinyu/projects/Mechanic/region_classifier.h
+1430496750 /home/xinyu/projects/Mechanic/region_classifier.h
 	<opencv/cv.h>
 	<opencv/ml.h>
 	<stdio.h>
@@ -654,59 +655,60 @@
 
 1425713515 /usr/local/include/leptonica/watershed.h
 
-1426049439 /home/xinyu/projects/Mechanic/mser.h
+1430496750 /home/xinyu/projects/Mechanic/mser.h
 	<vector>
 	<stdint.h>
 	"region.h"
 
-1426049439 /home/xinyu/projects/Mechanic/max_meaningful_clustering.h
+1430496750 /home/xinyu/projects/Mechanic/max_meaningful_clustering.h
 	<vector>
 	"fast_clustering.cpp"
 	"nfa.cpp"
 	"min_bounding_box.h"
 
-1426049439 /home/xinyu/projects/Mechanic/fast_clustering.cpp
+1430496750 /home/xinyu/projects/Mechanic/fast_clustering.cpp
 	<limits>
 	<float.h>
+	<cstdlib>
 	<algorithm>
 	<limits.h>
 	<stdint.h>
 	<cmath>
 
-1426049439 /home/xinyu/projects/Mechanic/nfa.cpp
+1430496750 /home/xinyu/projects/Mechanic/nfa.cpp
 	<math.h>
 	<float.h>
 
-1426049439 /home/xinyu/projects/Mechanic/min_bounding_box.h
+1430496750 /home/xinyu/projects/Mechanic/min_bounding_box.h
 	<vector>
 
-1427699220 /home/xinyu/projects/Mechanic/utils.h
+1430496750 /home/xinyu/projects/Mechanic/utils.h
 	"stdafx.h"
 	"region.h"
 
-1426049439 source:/home/xinyu/projects/Mechanic/max_meaningful_clustering.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/max_meaningful_clustering.cpp
 	"max_meaningful_clustering.h"
 
-1426049439 source:/home/xinyu/projects/Mechanic/min_bounding_box.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/min_bounding_box.cpp
 	"min_bounding_box.h"
 
-1426049439 source:/home/xinyu/projects/Mechanic/mser.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/mser.cpp
 	"mser.h"
 	<algorithm>
 	<cassert>
 	<limits>
 
-1426049439 source:/home/xinyu/projects/Mechanic/nfa.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/nfa.cpp
 	<math.h>
 	<float.h>
 
-1426049439 source:/home/xinyu/projects/Mechanic/region.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/region.cpp
 	"region.h"
 	<algorithm>
 	<cassert>
 	<limits>
 
-1426049439 source:/home/xinyu/projects/Mechanic/region_classifier.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/region_classifier.cpp
 	"region_classifier.h"
 
 1427057220 /usr/local/include/tbb/tbb_stddef.h
@@ -1266,14 +1268,14 @@
 	"atomic.h"
 	"task_arena.h"
 
-1427733323 source:/home/xinyu/projects/Mechanic/FaceDetector.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/FaceDetector.cpp
 	"FaceDetector.h"
 
-1427694277 /home/xinyu/projects/Mechanic/FaceDetector.h
+1430496750 /home/xinyu/projects/Mechanic/FaceDetector.h
 	"stdafx.h"
 	"VideoReader.h"
 
-1429659708 /home/xinyu/projects/Mechanic/stdafx.h
+1430496750 /home/xinyu/projects/Mechanic/stdafx.h
 	<cstdio>
 	<cstdlib>
 	<iomanip>
@@ -1290,13 +1292,13 @@
 	<tesseract/baseapi.h>
 	<leptonica/allheaders.h>
 
-1427698464 /home/xinyu/projects/Mechanic/VideoReader.h
+1430496750 /home/xinyu/projects/Mechanic/VideoReader.h
 	"stdafx.h"
 
-1427732494 source:/home/xinyu/projects/Mechanic/VideoReader.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/VideoReader.cpp
 	"VideoReader.h"
 
-1427698774 /home/xinyu/projects/Mechanic/TextDetector.h
+1430496750 /home/xinyu/projects/Mechanic/TextDetector.h
 	"stdafx.h"
 	"VideoReader.h"
 	"region.h"
@@ -1306,23 +1308,23 @@
 	"group_classifier.h"
 	"utils.h"
 
-1430168941 source:/home/xinyu/projects/Mechanic/TextDetector.cpp
+1430499954 source:/home/xinyu/projects/Mechanic/TextDetector.cpp
 	"TextDetector.h"
 	"ImageUtils.h"
 
-1428968713 source:/home/xinyu/projects/Mechanic/utils.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/utils.cpp
 	"utils.h"
 
-1428346583 source:/home/xinyu/projects/Mechanic/QRScanner.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/QRScanner.cpp
 	"QRScanner.h"
 
-1428363537 /home/xinyu/projects/Mechanic/QRScanner.h
+1430496750 /home/xinyu/projects/Mechanic/QRScanner.h
 	"stdafx.h"
 	"VideoReader.h"
 
-1428868494 source:/home/xinyu/projects/Mechanic/ImageUtils.cpp
+1430496750 source:/home/xinyu/projects/Mechanic/ImageUtils.cpp
 	"ImageUtils.h"
 
-1428866802 /home/xinyu/projects/Mechanic/ImageUtils.h
+1430496750 /home/xinyu/projects/Mechanic/ImageUtils.h
 	"stdafx.h"
 
