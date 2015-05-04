@@ -226,13 +226,13 @@ void TextDetector::WorkingThread()
                     if(ocrResult == NULL)
                         continue;
                     int conf = api.MeanTextConf();
-                    if (conf < 80) continue;
+                    if (conf < 30) continue;
                     printf("Box[%d]: x=%d, y=%d, w=%d, h=%d, confidence: %d, text: %s",
                             i, box->x, box->y, box->w, box->h, conf, ocrResult);
                     Rect rect(box->x, box->y, box->w, box->h);
                     TextInfo info;
                     info.box = rect;
-                    info.text = string(ocrResult);
+                    if (conf > 80) info.text = string(ocrResult);
                     result.push_back(info);
                 }
                 //cvtColor(grey, grey, CV_GRAY2RGB);
