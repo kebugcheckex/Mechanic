@@ -48,16 +48,41 @@ string GetDateTime()
 
 void DisplayText(Mat& frame, vector<string> lines)
 {
+    /*
+     *  If the recognized text is longer than 12 characters, we need to wrap it
+     *  around so that it will not overflow the display area.
+     */
+    vector<string> wrapped_lines;
+
+    for (int i = 0; i < lines.size(); i++)
+    {
+        if (lines[i].size() <= 12) wrapped_lines.push_back(lines[i]);
+        else
+        {
+            int j;
+            for (j = 0; j < lines[i].size() / 12; j++)
+            {
+                wrapped_lines.push_back(lines[i].substr(j*12, 12));
+                cout << "j=" << j << endl;
+            }
+            wrapped_lines.push_back(lines[i].substr(j*12, lines[i].size() - j*12));
+        }
+    }
+    /*
+     *  TODO - Currently, the text display area is hard-coded. In the case that the recognized text
+     *  is too long to fit in the box, we need to adjust the font size adaptively. This has not
+     *  been implemented yet.
+     */
     int width = frame.cols;
     int height = frame.rows;
     int x = width * 3 / 4 - height / 20;
     int y = height / 20;
     Mat wind = Mat::zeros(height/4, width/4, CV_8UC3);
     CvFont font = cvFontQt("Arial", 10, CV_RGB(255, 255, 255));
-    for (int i = 0; i < lines.size(); i++)
+    for (int i = 0; i < wrapped_lines.size(); i++)
     {
         Point coord(0, 10 * (i + 1));
-        addText(wind, lines[i], coord, font);
+        addText(wind, wrapped_lines[i], coord, font);
     }
     wind.copyTo(frame(Rect(x, y, wind.cols, wind.rows)));
 }
@@ -240,6 +265,5 @@ int main(int argc, char** argv)
         }
 	}
 	cout << "Total frames: " << theVideo.size() << endl;
-    cout << "Done!" << endl;
 	return 0;
 }
