@@ -39,6 +39,7 @@ typedef struct tagTextInfo
 {
     cv::Rect box;
     std::string text;
+    cv::Mat mask;
 } TextInfo;
 
 typedef std::vector<TextInfo> TextResult;

@@ -34,7 +34,6 @@ void get_gradient_magnitude(Mat& _grey_img, Mat& _gradient_magnitude)
 
 void drawClusters(Mat& img, vector<Region> *regions, vector<vector<int> > *meaningful_clusters)
 {
-	//img = img*0;
 	uchar* rsptr = (uchar*)img.data;
 	for (int i = 0; i < meaningful_clusters->size(); i++)
 	{
@@ -42,9 +41,9 @@ void drawClusters(Mat& img, vector<Region> *regions, vector<vector<int> > *meani
 	    {
             for (int p = 0; p < regions->at(meaningful_clusters->at(i).at(c)).pixels_.size(); p++)
             {
-                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3] = bcolors[i%9][2];
-                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3+1] = bcolors[i%9][1];
-                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3+2] = bcolors[i%9][0];
+                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3] = 0;
+                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3+1] = 255;
+                rsptr[regions->at(meaningful_clusters->at(i).at(c)).pixels_.at(p)*3+2] = 0;
             }
 	    }
 	}

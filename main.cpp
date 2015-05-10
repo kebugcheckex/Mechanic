@@ -53,7 +53,6 @@ void DisplayText(Mat& frame, vector<string> lines)
      *  around so that it will not overflow the display area.
      */
     vector<string> wrapped_lines;
-
     for (int i = 0; i < lines.size(); i++)
     {
         if (lines[i].size() <= 12) wrapped_lines.push_back(lines[i]);
@@ -63,7 +62,6 @@ void DisplayText(Mat& frame, vector<string> lines)
             for (j = 0; j < lines[i].size() / 12; j++)
             {
                 wrapped_lines.push_back(lines[i].substr(j*12, 12));
-                cout << "j=" << j << endl;
             }
             wrapped_lines.push_back(lines[i].substr(j*12, lines[i].size() - j*12));
         }
@@ -89,7 +87,7 @@ void DisplayText(Mat& frame, vector<string> lines)
 
 int main(int argc, char** argv)
 {
-    if (argc < 2)   // We need one parameters for input file
+    if (argc < 2)
     {
         cout << "Usage: " << argv[0] << " input-file" << endl;
         cout << "Input can be either a file on the disk or a URL to a video stream." << endl;
@@ -116,7 +114,6 @@ int main(int argc, char** argv)
 
 	Mat outputFrame(height, width, CV_8UC3);
 	Mat inputFrame(height, width, CV_8UC3);
-    //CvFont font = cvFontQt("Helvetica", 12.0, CV_RGB(0, 255, 0) );
     CvFont prompt_font = cvFontQt("Arial", 12.0, CV_RGB(255, 0, 0));
     vector<int> high_count;
     vector<Mat> theVideo;
@@ -163,23 +160,39 @@ int main(int argc, char** argv)
             {
                 if (tr.size() > 0)
                 {
-                    if (display_delay == 0) lines.clear();
-                    content++;
-                    int line = 0;
-                    for (TextResult::iterator it = tr.begin(); it != tr.end(); it++)
+                    for (int i = 0; i < outputFrame.rows; i++)
+                    {
+                        for (int j = 0; j < outputFrame.cols; j++)
+                        {
+                            auto pixel = tr[0].mask.at<Vec3b>(i, j);
+                            if (pixel[1] != 0)
+                            {
+                                Vec3b color{0, 255, 0};
+                                outputFrame.at<Vec3b>(i, j) = color;
+                            }
+                        }
+                    }
+
+                    for (auto it = tr.begin(); it != tr.end(); it++)
                     {
                         rectangle(outputFrame, it->box, Scalar(0, 255, 255), 2);
                         if (display_delay == 0)
                         {
                             lines.push_back(it->text);
                             display_delay = 15;
+                            content++;
+                            int line = 0;
+
                         }
                     }
                 }
             }
+
             DisplayText(outputFrame, lines);
             if (display_delay > 0) display_delay--;
+            if (display_delay == 0) lines.clear();
         }
+
         if (prompt_text.size() > 0)
         {
             prompt_count++;
@@ -193,6 +206,7 @@ int main(int argc, char** argv)
                 prompt_count = 0;
             }
         }
+
         Mat result(width*2, height*2, CV_8UC3);
         resize(outputFrame, result, Size(width*2, height*2));
         imshow("Result", result);

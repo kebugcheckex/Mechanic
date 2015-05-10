@@ -227,15 +227,19 @@ void TextDetector::WorkingThread()
                         continue;
                     int conf = api.MeanTextConf();
                     if (conf < 30) continue;
+                    int box_area = box->w * box->h;
+                    int frame_area = grey.cols * grey.rows;
+                    if (box_area * 4 > frame_area) continue;
                     printf("Box[%d]: x=%d, y=%d, w=%d, h=%d, confidence: %d, text: %s",
                             i, box->x, box->y, box->w, box->h, conf, ocrResult);
                     Rect rect(box->x, box->y, box->w, box->h);
                     TextInfo info;
                     info.box = rect;
-                    if (conf > 80) info.text = string(ocrResult);
+                    if (conf > 70) info.text = string(ocrResult);
                     result.push_back(info);
+                    if (i == 0) segmentation.copyTo(result[0].mask);
                 }
-                //cvtColor(grey, grey, CV_GRAY2RGB);
+
                 mtx.lock();
                 m_results = result;
                 mtx.unlock();
