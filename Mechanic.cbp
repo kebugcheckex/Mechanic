@@ -44,7 +44,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="0" />
+				<Option parameters="http://192.168.0.100:8090/live.mpg" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-std=c++11" />

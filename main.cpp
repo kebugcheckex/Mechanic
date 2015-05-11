@@ -158,37 +158,40 @@ int main(int argc, char** argv)
             TextResult tr;
             if (textDetector.GetResults(tr))
             {
-                if (tr.size() > 0)
+//                if (tr.size() > 0)
+//                {
+//                    for (int i = 0; i < tr[0].mask.rows; i++)
+//                    {
+//                        for (int j = 0; j < tr[0].mask.cols; j++)
+//                        {
+//                            auto pixel = tr[0].mask.at<Vec3b>(i, j);
+//                            if (pixel[1] != 0)
+//                            {
+//                                Vec3b color{0, 255, 0};
+//                                outputFrame.at<Vec3b>(i, j) = color;
+//                            }
+//                        }
+//                    }
+//                }
+                for (auto it = tr.begin(); it != tr.end(); it++)
                 {
-                    for (int i = 0; i < tr[0].mask.rows; i++)
-                    {
-                        for (int j = 0; j < tr[0].mask.cols; j++)
+                    //rectangle(outputFrame, it->box, Scalar(0, 255, 255), 2);
+                    for (int i = 0; i < it->box.height; i++)
+                        for (int j = 0; j < it->box.width; j++)
                         {
-                            auto pixel = tr[0].mask.at<Vec3b>(i, j);
-                            if (pixel[1] != 0)
-                            {
-                                Vec3b color{0, 255, 0};
-                                outputFrame.at<Vec3b>(i, j) = color;
-                            }
+                            Vec3b pixel = it->mask.at<Vec3b>(i, j)
+                            if (pixel[1] == 255)
+                                outputFrame.at<Vec3b>(j + it->box.y, i + it->box.x);
                         }
-                    }
-
-                    for (auto it = tr.begin(); it != tr.end(); it++)
+                    if (display_delay == 0)
                     {
-                        //rectangle(outputFrame, it->box, Scalar(0, 255, 255), 2);
-                        if (display_delay == 0)
-                        {
-                            lines.push_back(it->text);
-                            display_delay = 15;
-                            content++;
-                            int line = 0;
-
-                        }
-
+                        lines.push_back(it->text);
+                        display_delay = 15;
+                        content++;
+                        int line = 0;
                     }
                 }
             }
-
             DisplayText(outputFrame, lines);
             if (display_delay > 0) display_delay--;
             if (display_delay == 0) lines.clear();
