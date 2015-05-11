@@ -160,9 +160,9 @@ int main(int argc, char** argv)
             {
                 if (tr.size() > 0)
                 {
-                    for (int i = 0; i < outputFrame.rows; i++)
+                    for (int i = 0; i < tr[0].mask.rows; i++)
                     {
-                        for (int j = 0; j < outputFrame.cols; j++)
+                        for (int j = 0; j < tr[0].mask.cols; j++)
                         {
                             auto pixel = tr[0].mask.at<Vec3b>(i, j);
                             if (pixel[1] != 0)
@@ -175,7 +175,7 @@ int main(int argc, char** argv)
 
                     for (auto it = tr.begin(); it != tr.end(); it++)
                     {
-                        rectangle(outputFrame, it->box, Scalar(0, 255, 255), 2);
+                        //rectangle(outputFrame, it->box, Scalar(0, 255, 255), 2);
                         if (display_delay == 0)
                         {
                             lines.push_back(it->text);
@@ -184,6 +184,7 @@ int main(int argc, char** argv)
                             int line = 0;
 
                         }
+
                     }
                 }
             }
